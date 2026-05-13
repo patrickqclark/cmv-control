@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1643,14 +1642,19 @@ function deletarNota(id) {
 // ══════════════════════════════════════════════════════
 async function enviarParaSheets(tipo, dados) {
   const url = state.config.scriptUrl;
-  if (!url) return; // silent — user hasn't configured yet
+  if (!url) return;
   try {
-    await fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tipo, dados })
-    });
+    // Google Apps Script requer GET com parâmetros via URL ou jsonp
+    // Usamos um form submit trick para contornar CORS
+    const params = encodeURIComponent(JSON.stringify({ tipo, dados }));
+    const fullUrl = `${url}?payload=${params}`;
+    
+    // Cria um iframe invisível para fazer o request sem bloquear CORS
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = fullUrl;
+    document.body.appendChild(iframe);
+    setTimeout(() => document.body.removeChild(iframe), 5000);
   } catch(e) {
     console.warn('Sheets sync failed:', e);
   }
