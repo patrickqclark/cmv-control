@@ -787,6 +787,9 @@
 
     <button class="btn btn-primary" onclick="salvarNF()">Salvar Nota Fiscal</button>
     <button class="btn btn-secondary" onclick="limparNF()">Limpar</button>
+
+    <div class="section-title">Notas Lançadas</div>
+    <div id="notas-history"></div>
   </div>
 </div>
 
@@ -1224,6 +1227,7 @@ function salvarNF() {
   enviarParaSheets('nota', nota);
   toast('Nota fiscal salva! ✓', 'success');
   limparNF();
+  renderNotasHistory();
 }
 
 function limparNF() {
@@ -1232,6 +1236,29 @@ function limparNF() {
   document.getElementById('nf-numero').value = '';
   currentItems = [];
   renderItems();
+}
+
+function renderNotasHistory() {
+  const el = document.getElementById('notas-history');
+  if (!el) return;
+  const sorted = [...state.notas].sort((a,b)=>b.data.localeCompare(a.data)).slice(0,15);
+  if (sorted.length === 0) { el.innerHTML = emptyState('Nenhuma nota lançada ainda'); return; }
+  el.innerHTML = sorted.map(n => {
+    const totalCMV = n.itens.filter(i=>i.cat==='Consumo').reduce((a,i)=>a+i.valor,0);
+    const total = n.itens.reduce((a,i)=>a+i.valor,0);
+    return `
+    <div class="history-item">
+      <div class="history-left">
+        <div class="history-supplier">${n.fornecedor}</div>
+        <div class="history-date">${fmtDate(n.data)} · ${n.itens.length} iten(s)${n.numero?' · NF '+n.numero:''}</div>
+        ${totalCMV > 0 ? `<span class="history-cmv-badge" style="margin-top:4px;display:inline-block">CMV ${fmtR(totalCMV)}</span>` : ''}
+      </div>
+      <div class="history-right" style="display:flex;align-items:center;gap:12px">
+        <div class="history-total">${fmtR(total)}</div>
+        <button onclick="deletarNota(${n.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════════════
@@ -1264,8 +1291,9 @@ function renderFatHistory() {
         <div class="history-supplier">${f.obs || 'Faturamento'}</div>
         <div class="history-date">${fmtDate(f.data)}</div>
       </div>
-      <div class="history-right">
+      <div class="history-right" style="display:flex;align-items:center;gap:12px">
         <div class="history-total">${fmtR(f.valor)}</div>
+        <button onclick="deletarFaturamento(${f.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
       </div>
     </div>
   `).join('');
@@ -1328,8 +1356,9 @@ function renderEstHistory() {
         <div class="history-supplier">${MESES[e.mes-1]} · ${e.tipo}</div>
         <div class="history-date">${e.obs||''}</div>
       </div>
-      <div class="history-right">
+      <div class="history-right" style="display:flex;align-items:center;gap:12px">
         <div class="history-total">${fmtR(e.valor)}</div>
+        <button onclick="deletarEstoque(${e.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
       </div>
     </div>
   `).join('');
@@ -1367,8 +1396,9 @@ function renderEmpHistory() {
         <div class="history-supplier">${e.tipo} → ${e.loja}</div>
         <div class="history-date">${fmtDate(e.data)} · ${e.desc}</div>
       </div>
-      <div class="history-right">
+      <div class="history-right" style="display:flex;align-items:center;gap:12px">
         <div class="history-total" style="color:${e.tipo==='Cedi'?'var(--red)':'var(--green)'}">${e.tipo==='Cedi'?'-':'+'} ${fmtR(e.valor)}</div>
+        <button onclick="deletarEmprestimo(${e.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
       </div>
     </div>
   `).join('');
@@ -1581,6 +1611,35 @@ function confirmarFatGCOM() {
 }
 
 
+
+// ══════════════════════════════════════════════════════
+// DELETAR
+// ══════════════════════════════════════════════════════
+function deletarFaturamento(id) {
+  if (!confirm('Apagar este faturamento?')) return;
+  state.faturamentos = state.faturamentos.filter(f => f.id !== id);
+  save(); renderFatHistory();
+  toast('Faturamento apagado', 'success');
+}
+function deletarEstoque(id) {
+  if (!confirm('Apagar este estoque?')) return;
+  state.estoques = state.estoques.filter(e => e.id !== id);
+  save(); renderEstHistory();
+  toast('Estoque apagado', 'success');
+}
+function deletarEmprestimo(id) {
+  if (!confirm('Apagar este empréstimo?')) return;
+  state.emprestimos = state.emprestimos.filter(e => e.id !== id);
+  save(); renderEmpHistory();
+  toast('Empréstimo apagado', 'success');
+}
+function deletarNota(id) {
+  if (!confirm('Apagar esta nota fiscal e todos os seus itens?')) return;
+  state.notas = state.notas.filter(n => n.id !== id);
+  save(); renderNotasHistory();
+  toast('Nota fiscal apagada', 'success');
+}
+
 // ══════════════════════════════════════════════════════
 async function enviarParaSheets(tipo, dados) {
   const url = state.config.scriptUrl;
@@ -1636,6 +1695,7 @@ if (state.config.lojaB) { lojaSelect.options[0].text = state.config.lojaB; lojaS
 if (state.config.lojaC) { lojaSelect.options[1].text = state.config.lojaC; lojaSelect.options[1].value = state.config.lojaC; }
 
 renderDashboard();
+renderNotasHistory();
 </script>
 </body>
 </html>
