@@ -1071,35 +1071,39 @@
 <div class="modal-overlay" id="modal-gcom">
   <div class="modal">
     <div class="modal-title">
-      Importar FAT do GCOM
+      📊 Importar FAT do GCOM
       <button class="modal-close" onclick="closeModal('modal-gcom')">×</button>
     </div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px">
-      O GCOM foi aberto em nova aba. Siga os passos:
-    </p>
-    <div style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:16px">
+    <div style="background:var(--cream);border-radius:8px;padding:14px;margin-bottom:16px;border:1px solid var(--border)">
       <div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start">
-        <span style="background:var(--accent2);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</span>
-        <span style="font-size:13px">Faça login com <strong style="color:var(--accent)">Empresa</strong>, <strong style="color:var(--accent)">Usuário</strong> e <strong style="color:var(--accent)">Senha</strong></span>
+        <span style="background:var(--green-dark);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</span>
+        <span style="font-size:13px;color:var(--text)">O GCOM abriu em outra aba — <strong>faça login</strong> se necessário</span>
       </div>
       <div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start">
-        <span style="background:var(--accent2);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</span>
-        <span style="font-size:13px">Na tela principal, anote o valor do <strong style="color:var(--accent)">FAT</strong> do mês atual</span>
+        <span style="background:var(--green-dark);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</span>
+        <span style="font-size:13px;color:var(--text)">Veja o valor do <strong style="color:var(--green-dark)">FAT</strong> na tela principal</span>
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start">
-        <span style="background:var(--accent2);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</span>
-        <span style="font-size:13px">Volte aqui, cole o valor abaixo e salve</span>
+        <span style="background:var(--green-dark);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</span>
+        <span style="font-size:13px;color:var(--text)">Volte aqui e <strong>digite o valor</strong> abaixo</span>
       </div>
     </div>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:16px">
+      💡 Após o primeiro login o GCOM fica salvo no navegador — nas próximas vezes abre direto no dashboard!
+    </p>
     <div class="field">
-      <label>FAT do mês (R$)</label>
+      <label>FAT do período (R$)</label>
       <input type="number" id="gcom-fat-valor" placeholder="0,00" step="0.01" inputmode="decimal">
     </div>
     <div class="field">
       <label>Data de referência</label>
       <input type="date" id="gcom-fat-data">
     </div>
-    <button class="btn btn-primary" onclick="confirmarFatGCOM()">Salvar Faturamento</button>
+    <div class="field">
+      <label>Observação (opc.)</label>
+      <input type="text" id="gcom-fat-obs" placeholder="Ex: Maio 2026 — semana 1">
+    </div>
+    <button class="btn btn-primary" onclick="confirmarFatGCOM()">✓ Salvar Faturamento</button>
     <button class="btn btn-secondary" onclick="closeModal('modal-gcom')">Cancelar</button>
   </div>
 </div>
@@ -1329,29 +1333,12 @@ function renderFatHistory() {
 }
 
 async function importarGCOM() {
-  const empresa = state.config.gcomEmpresa;
-  const user = state.config.gcomUser;
-  const pass = state.config.gcomPass;
-  if (!empresa || !user) {
-    toast('Configure Empresa e Usuário do GCOM em Config ⚙️', 'error');
-    return;
-  }
-
-  // Abre o GCOM na URL correta
-  // Por restrições de segurança do navegador (CORS/same-origin), não é possível
-  // fazer login automático via JavaScript em site externo. O fluxo é:
-  // 1. App abre o GCOM na tela de login
-  // 2. Gerente faz login (campos: Empresa, Usuário, Senha)
-  // 3. Gerente vê o FAT na tela principal e digita no app
-  //
-  // Para automação total (sem digitação), seria necessário um servidor proxy próprio.
-  // Essa é uma limitação de segurança do navegador, não do app.
-
-  const url = 'https://www3.gcom.com.br/Cloud/Home/Login.aspx';
-  toast('Abrindo GCOM... faça login e consulte o FAT 📊', 'success');
-  window.open(url, '_blank');
-
-  // Mostra modal de instrução
+  // Abre direto no dashboard do GCOM — se já estiver logado, vai direto
+  // Se não estiver logado, o GCOM redireciona para o login automaticamente
+  // Depois do primeiro login, o navegador salva a sessão e não precisa mais
+  const url = 'https://www3.gcom.com.br/Cloud/Vendas/Dashboard';
+  const gcomTab = window.open(url, 'gcom_window');
+  toast('Abrindo GCOM... pegue o FAT e volte aqui 📊', 'success');
   showGcomModal();
 }
 
@@ -1629,13 +1616,13 @@ function showGcomModal() {
 function confirmarFatGCOM() {
   const valor = parseFloat(document.getElementById('gcom-fat-valor').value);
   const data = document.getElementById('gcom-fat-data').value;
+  const obs = document.getElementById('gcom-fat-obs').value.trim();
   if (!valor || !data) { toast('Preencha o valor e a data', 'error'); return; }
   closeModal('modal-gcom');
-  // Pre-fill the faturamento form and switch to it
   navTo('fat', document.querySelectorAll('.bnav-btn')[2]);
   document.getElementById('fat-data').value = data;
   document.getElementById('fat-valor').value = valor;
-  document.getElementById('fat-obs').value = 'Importado do GCOM';
+  document.getElementById('fat-obs').value = obs || 'Importado do GCOM';
   toast('Valor preenchido! Confirme e salve ✓', 'success');
 }
 
