@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -718,6 +717,9 @@
       <div class="month-name" id="dash-month-name">Maio 2026</div>
       <button class="month-arrow" onclick="changeMonth(1)">›</button>
     </div>
+    <button class="btn btn-secondary" id="sync-btn" onclick="sincronizarPlanilha()" style="margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;padding:10px">
+      <span id="sync-icon">🔄</span> <span id="sync-label">Sincronizar com Planilha</span>
+    </button>
 
     <!-- CMV Hero -->
     <div class="cmv-hero">
@@ -1657,6 +1659,70 @@ function deletarNota(id) {
 }
 
 // ══════════════════════════════════════════════════════
+// SINCRONIZAÇÃO COM PLANILHA
+// ══════════════════════════════════════════════════════
+async function sincronizarPlanilha() {
+  const url = state.config.scriptUrl;
+  if (!url) {
+    toast('Configure a URL do Apps Script em Config ⚙️', 'error');
+    return;
+  }
+
+  // Update UI
+  document.getElementById('sync-icon').textContent = '⏳';
+  document.getElementById('sync-label').textContent = 'Sincronizando...';
+  document.getElementById('sync-btn').disabled = true;
+
+  try {
+    const resp = await fetch(url + '?acao=ler', { method: 'GET' });
+    const json = await resp.json();
+
+    if (!json.ok || !json.dados) {
+      throw new Error(json.error || 'Erro ao ler dados');
+    }
+
+    const d = json.dados;
+
+    // Mescla dados da planilha com dados locais
+    // A planilha é a fonte da verdade — substitui os dados locais
+    if (d.faturamentos && d.faturamentos.length > 0) {
+      state.faturamentos = d.faturamentos;
+    }
+    if (d.notas && d.notas.length > 0) {
+      state.notas = d.notas;
+    }
+    if (d.estoques && d.estoques.length > 0) {
+      state.estoques = d.estoques;
+    }
+    if (d.emprestimos && d.emprestimos.length > 0) {
+      state.emprestimos = d.emprestimos;
+    }
+
+    save();
+    renderDashboard();
+    renderNotasHistory();
+    renderFatHistory();
+    renderEstHistory();
+    renderEmpHistory();
+
+    document.getElementById('sync-icon').textContent = '✅';
+    document.getElementById('sync-label').textContent = 'Sincronizado!';
+    toast('Dados atualizados da planilha ✓', 'success');
+
+  } catch(err) {
+    document.getElementById('sync-icon').textContent = '❌';
+    document.getElementById('sync-label').textContent = 'Erro — tente novamente';
+    toast('Erro ao sincronizar: ' + err.message, 'error');
+  }
+
+  setTimeout(() => {
+    document.getElementById('sync-icon').textContent = '🔄';
+    document.getElementById('sync-label').textContent = 'Sincronizar com Planilha';
+    document.getElementById('sync-btn').disabled = false;
+  }, 3000);
+}
+
+// ══════════════════════════════════════════════════════
 async function enviarParaSheets(tipo, dados) {
   const url = state.config.scriptUrl;
   if (!url) return;
@@ -1717,6 +1783,11 @@ if (state.config.lojaC) { lojaSelect.options[1].text = state.config.lojaC; lojaS
 
 renderDashboard();
 renderNotasHistory();
+
+// Sincroniza automaticamente ao abrir se tiver URL configurada
+if (state.config.scriptUrl) {
+  setTimeout(() => sincronizarPlanilha(), 1500);
+}
 </script>
 </body>
 </html>
