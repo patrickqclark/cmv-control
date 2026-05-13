@@ -1448,17 +1448,17 @@ function renderDashboard() {
 
   // Faturamento do mês
   const fat = state.faturamentos
-    .filter(f => { const d = new Date(f.data+'T00:00:00'); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
+    .filter(f => { const d = parseData(f.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
     .reduce((a,f)=>a+f.valor, 0);
 
   // Compras de consumo do mês
   const compras = state.notas
-    .filter(n => { const d = new Date(n.data+'T00:00:00'); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
+    .filter(n => { const d = parseData(n.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
     .flatMap(n=>n.itens.filter(i=>i.cat==='Consumo'))
     .reduce((a,i)=>a+i.valor, 0);
 
   // Empréstimos
-  const empMes = state.emprestimos.filter(e => { const d = new Date(e.data+'T00:00:00'); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; });
+  const empMes = state.emprestimos.filter(e => { const d = parseData(e.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; });
   const empCedidos = empMes.filter(e=>e.tipo==='Cedi').reduce((a,e)=>a+e.valor, 0);
   const empRecebidos = empMes.filter(e=>e.tipo==='Recebi').reduce((a,e)=>a+e.valor, 0);
 
@@ -1507,7 +1507,7 @@ function renderDashboard() {
   // Subcategories
   const subcatMap = {};
   state.notas
-    .filter(n => { const d = new Date(n.data+'T00:00:00'); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
+    .filter(n => { const d = parseData(n.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
     .flatMap(n=>n.itens.filter(i=>i.cat==='Consumo' && i.subcat))
     .forEach(i => { subcatMap[i.subcat] = (subcatMap[i.subcat]||0) + i.valor; });
 
@@ -1540,16 +1540,16 @@ function renderChart() {
   const months = MESES.map((name, i) => {
     const m = i + 1;
     const fat = state.faturamentos
-      .filter(f => { const d = new Date(f.data+'T00:00:00'); return d.getMonth()+1===m && d.getFullYear()===dashYear; })
+      .filter(f => { const d = parseData(f.data); return d.getMonth()+1===m && d.getFullYear()===dashYear; })
       .reduce((a,f)=>a+f.valor, 0);
     const compras = state.notas
-      .filter(n => { const d = new Date(n.data+'T00:00:00'); return d.getMonth()+1===m && d.getFullYear()===dashYear; })
+      .filter(n => { const d = parseData(n.data); return d.getMonth()+1===m && d.getFullYear()===dashYear; })
       .flatMap(n=>n.itens.filter(i=>i.cat==='Consumo'))
       .reduce((a,i)=>a+i.valor, 0);
     const estIni = state.estoques.find(e=>e.mes===m&&e.ano===dashYear&&e.tipo==='Inicial');
     const estFin = state.estoques.find(e=>e.mes===m&&e.ano===dashYear&&e.tipo==='Final');
-    const empCed = state.emprestimos.filter(e=>{ const d=new Date(e.data+'T00:00:00'); return d.getMonth()+1===m&&d.getFullYear()===dashYear&&e.tipo==='Cedi';}).reduce((a,e)=>a+e.valor,0);
-    const empRec = state.emprestimos.filter(e=>{ const d=new Date(e.data+'T00:00:00'); return d.getMonth()+1===m&&d.getFullYear()===dashYear&&e.tipo==='Recebi';}).reduce((a,e)=>a+e.valor,0);
+    const empCed = state.emprestimos.filter(e=>{ const d=parseData(e.data); return d.getMonth()+1===m&&d.getFullYear()===dashYear&&e.tipo==='Cedi';}).reduce((a,e)=>a+e.valor,0);
+    const empRec = state.emprestimos.filter(e=>{ const d=parseData(e.data); return d.getMonth()+1===m&&d.getFullYear()===dashYear&&e.tipo==='Recebi';}).reduce((a,e)=>a+e.valor,0);
     const cmvRS = (estIni?estIni.valor:0) + compras + empRec - empCed - (estFin?estFin.valor:0);
     const pct = fat > 0 ? cmvRS / fat * 100 : 0;
     return { name: name.slice(0,3), pct, active: m === dashMonth };
@@ -1738,6 +1738,17 @@ async function enviarParaSheets(tipo, dados) {
 // ══════════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════════
+function parseData(dataStr) {
+  if (!dataStr) return new Date('invalid');
+  if (/^\d{4}-\d{2}-\d{2}$/.test(String(dataStr))) return new Date(dataStr + 'T00:00:00');
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(String(dataStr))) {
+    const [d, m, y] = String(dataStr).split('/');
+    return new Date(`${y}-${m}-${d}T00:00:00`);
+  }
+  if (String(dataStr).includes('T')) return new Date(dataStr);
+  return new Date(dataStr);
+}
+
 function fmtR(val) {
   if (!val && val !== 0) return 'R$ —';
   return 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
