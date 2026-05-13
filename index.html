@@ -1684,20 +1684,11 @@ async function sincronizarPlanilha() {
 
     const d = json.dados;
 
-    // Mescla dados da planilha com dados locais
-    // A planilha é a fonte da verdade — substitui os dados locais
-    if (d.faturamentos && d.faturamentos.length > 0) {
-      state.faturamentos = d.faturamentos;
-    }
-    if (d.notas && d.notas.length > 0) {
-      state.notas = d.notas;
-    }
-    if (d.estoques && d.estoques.length > 0) {
-      state.estoques = d.estoques;
-    }
-    if (d.emprestimos && d.emprestimos.length > 0) {
-      state.emprestimos = d.emprestimos;
-    }
+    // A planilha é sempre a fonte da verdade — substitui tudo
+    state.faturamentos = d.faturamentos || [];
+    state.notas = d.notas || [];
+    state.estoques = d.estoques || [];
+    state.emprestimos = d.emprestimos || [];
 
     save();
     renderDashboard();
