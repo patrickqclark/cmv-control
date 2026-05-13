@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -962,15 +963,20 @@
     <div class="form-card">
       <div class="form-title">🔐 GCOM (Importação automática)</div>
       <div class="field">
+        <label>Empresa</label>
+        <input type="text" id="cfg-gcom-empresa" placeholder="Ex: risotos">
+      </div>
+      <div class="field">
         <label>Usuário GCOM</label>
-        <input type="text" id="cfg-gcom-user" placeholder="usuario@loja">
+        <input type="text" id="cfg-gcom-user" placeholder="usuario@loja" autocomplete="username">
       </div>
       <div class="field">
         <label>Senha GCOM</label>
-        <input type="password" id="cfg-gcom-pass" placeholder="••••••••">
+        <input type="password" id="cfg-gcom-pass" placeholder="••••••••" autocomplete="current-password">
       </div>
       <p style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6">
-        Credenciais salvas apenas localmente neste dispositivo (localStorage). Nunca enviadas para servidores externos.
+        Credenciais salvas apenas localmente neste dispositivo. Nunca enviadas para servidores externos.<br><br>
+        ⚠️ <strong style="color:var(--accent)">Como funciona:</strong> ao clicar em "Importar FAT do GCOM", o app abre o GCOM já na tela certa. Por restrições de segurança do navegador, o login automático não é possível sem um servidor intermediário — mas o link leva direto para a tela de login com os campos prontos para preencher.
       </p>
     </div>
 
@@ -1029,6 +1035,43 @@
   </div>
 </div>
 
+<!-- MODAL GCOM INSTRUÇÃO -->
+<div class="modal-overlay" id="modal-gcom">
+  <div class="modal">
+    <div class="modal-title">
+      Importar FAT do GCOM
+      <button class="modal-close" onclick="closeModal('modal-gcom')">×</button>
+    </div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px">
+      O GCOM foi aberto em nova aba. Siga os passos:
+    </p>
+    <div style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:16px">
+      <div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start">
+        <span style="background:var(--accent2);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</span>
+        <span style="font-size:13px">Faça login com <strong style="color:var(--accent)">Empresa</strong>, <strong style="color:var(--accent)">Usuário</strong> e <strong style="color:var(--accent)">Senha</strong></span>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start">
+        <span style="background:var(--accent2);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</span>
+        <span style="font-size:13px">Na tela principal, anote o valor do <strong style="color:var(--accent)">FAT</strong> do mês atual</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="background:var(--accent2);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</span>
+        <span style="font-size:13px">Volte aqui, cole o valor abaixo e salve</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>FAT do mês (R$)</label>
+      <input type="number" id="gcom-fat-valor" placeholder="0,00" step="0.01" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label>Data de referência</label>
+      <input type="date" id="gcom-fat-data">
+    </div>
+    <button class="btn btn-primary" onclick="confirmarFatGCOM()">Salvar Faturamento</button>
+    <button class="btn btn-secondary" onclick="closeModal('modal-gcom')">Cancelar</button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1062,7 +1105,7 @@ const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
                'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 let state = {
-  config: { lojaA:'Loja A', lojaB:'Loja B', lojaC:'Loja C', verde:30, amarelo:33, scriptUrl:'', gcomUser:'', gcomPass:'' },
+  config: { lojaA:'Loja A', lojaB:'Loja B', lojaC:'Loja C', verde:30, amarelo:33, scriptUrl:'', gcomEmpresa:'', gcomUser:'', gcomPass:'' },
   notas: [],       // { id, data, fornecedor, numero, itens:[{desc,cat,subcat,qtd,valor}] }
   faturamentos: [], // { id, data, valor, obs }
   estoques: [],     // { id, mes, ano, tipo, valor, obs }
@@ -1229,17 +1272,30 @@ function renderFatHistory() {
 }
 
 async function importarGCOM() {
+  const empresa = state.config.gcomEmpresa;
   const user = state.config.gcomUser;
   const pass = state.config.gcomPass;
-  if (!user || !pass) {
-    toast('Configure usuário/senha do GCOM em Config', 'error');
+  if (!empresa || !user) {
+    toast('Configure Empresa e Usuário do GCOM em Config ⚙️', 'error');
     return;
   }
-  toast('Abrindo GCOM para importar FAT...', 'success');
-  // O scraping real do GCOM requer um proxy server pois browsers bloqueiam cross-origin.
-  // Instrução: abra www.gcom.com.br, veja o FAT do mês e insira manualmente por enquanto.
-  // (Ver guia de setup para configurar o proxy opcional)
-  window.open('https://www.gcom.com.br', '_blank');
+
+  // Abre o GCOM na URL correta
+  // Por restrições de segurança do navegador (CORS/same-origin), não é possível
+  // fazer login automático via JavaScript em site externo. O fluxo é:
+  // 1. App abre o GCOM na tela de login
+  // 2. Gerente faz login (campos: Empresa, Usuário, Senha)
+  // 3. Gerente vê o FAT na tela principal e digita no app
+  //
+  // Para automação total (sem digitação), seria necessário um servidor proxy próprio.
+  // Essa é uma limitação de segurança do navegador, não do app.
+
+  const url = 'https://www3.gcom.com.br/Cloud/Home/Login.aspx';
+  toast('Abrindo GCOM... faça login e consulte o FAT 📊', 'success');
+  window.open(url, '_blank');
+
+  // Mostra modal de instrução
+  showGcomModal();
 }
 
 // ══════════════════════════════════════════════════════
@@ -1475,6 +1531,7 @@ function loadConfig() {
   document.getElementById('cfg-verde').value = c.verde || 30;
   document.getElementById('cfg-amarelo').value = c.amarelo || 33;
   document.getElementById('cfg-script-url').value = c.scriptUrl || '';
+  document.getElementById('cfg-gcom-empresa').value = c.gcomEmpresa || '';
   document.getElementById('cfg-gcom-user').value = c.gcomUser || '';
   document.getElementById('cfg-gcom-pass').value = c.gcomPass || '';
 }
@@ -1487,6 +1544,7 @@ function salvarConfig() {
     verde: parseFloat(document.getElementById('cfg-verde').value) || 30,
     amarelo: parseFloat(document.getElementById('cfg-amarelo').value) || 33,
     scriptUrl: document.getElementById('cfg-script-url').value.trim(),
+    gcomEmpresa: document.getElementById('cfg-gcom-empresa').value.trim(),
     gcomUser: document.getElementById('cfg-gcom-user').value,
     gcomPass: document.getElementById('cfg-gcom-pass').value,
   };
@@ -1500,8 +1558,29 @@ function salvarConfig() {
   toast('Configurações salvas! ✓', 'success');
 }
 
-// ══════════════════════════════════════════════════════
-// GOOGLE SHEETS INTEGRATION
+function showGcomModal() {
+  document.getElementById('gcom-fat-data').value = today();
+  document.getElementById('gcom-fat-valor').value = '';
+  // Small delay to let the GCOM tab open first
+  setTimeout(() => {
+    document.getElementById('modal-gcom').classList.add('open');
+  }, 800);
+}
+
+function confirmarFatGCOM() {
+  const valor = parseFloat(document.getElementById('gcom-fat-valor').value);
+  const data = document.getElementById('gcom-fat-data').value;
+  if (!valor || !data) { toast('Preencha o valor e a data', 'error'); return; }
+  closeModal('modal-gcom');
+  // Pre-fill the faturamento form and switch to it
+  navTo('fat', document.querySelectorAll('.bnav-btn')[2]);
+  document.getElementById('fat-data').value = data;
+  document.getElementById('fat-valor').value = valor;
+  document.getElementById('fat-obs').value = 'Importado do GCOM';
+  toast('Valor preenchido! Confirme e salve ✓', 'success');
+}
+
+
 // ══════════════════════════════════════════════════════
 async function enviarParaSheets(tipo, dados) {
   const url = state.config.scriptUrl;
