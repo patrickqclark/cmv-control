@@ -1336,7 +1336,7 @@ async function importarGCOM() {
   // Abre direto no dashboard do GCOM — se já estiver logado, vai direto
   // Se não estiver logado, o GCOM redireciona para o login automaticamente
   // Depois do primeiro login, o navegador salva a sessão e não precisa mais
-  const url = 'https://www3.gcom.com.br/Cloud/Vendas/Dashboard';
+  const url = 'https://www3.gcom.com.br/novoerp/#/novoerp/dashlet';
   const gcomTab = window.open(url, 'gcom_window');
   toast('Abrindo GCOM... pegue o FAT e volte aqui 📊', 'success');
   showGcomModal();
