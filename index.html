@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -18,1007 +17,315 @@
     --green-dark: #1b4332;
     --green-light: #d4edda;
     --yellow: #b8860b;
-    --yellow-light: #fff3cd;
     --red: #c0392b;
-    --red-light: #fde8e8;
-    --accent: #1b4332;
-    --accent2: #c9a43a;
     --gold: #c9a43a;
     --gold-light: #f4e4a6;
     --cream: #fdf8f0;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding-bottom: 80px; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 80px;
-  }
+  /* TOP BAR */
+  .topbar { background: var(--green-dark); border-bottom: 3px solid var(--gold); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #fff; }
+  .topbar-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; }
 
-  /* ── TOP BAR ── */
-  .topbar {
-    background: var(--green-dark);
-    border-bottom: 3px solid var(--gold);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .topbar-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #ffffff;
-  }
-  .topbar-store {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  /* ── NAV TABS ── */
-  .nav {
-    display: flex;
-    overflow-x: auto;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    scrollbar-width: none;
-    gap: 2px;
-    padding: 0 12px;
-  }
-  .nav::-webkit-scrollbar { display: none; }
-  .nav-btn {
-    flex-shrink: 0;
-    padding: 12px 16px;
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--muted);
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .nav-btn.active {
-    color: var(--green-dark);
-    border-bottom-color: var(--gold);
-  }
-
-  /* ── PAGES ── */
+  /* PAGES */
   .page { display: none; padding: 20px; }
   .page.active { display: block; }
 
-  /* ── DASHBOARD ── */
-  .month-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 16px;
-  }
-
-  .cmv-hero {
-    background: var(--green-dark);
-    border: none;
-    border-radius: 16px;
-    padding: 28px 24px 20px;
-    margin-bottom: 16px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .cmv-hero::before {
-    content: 'CMV';
-    position: absolute;
-    top: -10px;
-    right: 10px;
-    font-size: 72px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.05);
-    pointer-events: none;
-    font-family: 'Playfair Display', serif;
-  }
-  .cmv-pct {
-    font-size: 64px;
-    font-weight: 700;
-    font-family: 'Playfair Display', serif;
-    line-height: 1;
-    margin-bottom: 8px;
-    transition: color 0.4s;
-    color: #ffffff;
-  }
-  .cmv-pct.green { color: #6ee7a0; }
-  .cmv-pct.yellow { color: var(--gold); }
-  .cmv-pct.red { color: #f87171; }
-  .cmv-status {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    color: rgba(255,255,255,0.7);
-  }
-  .cmv-status.green { color: #6ee7a0; }
-  .cmv-status.yellow { color: var(--gold); }
-  .cmv-status.red { color: #f87171; }
-  .cmv-bar-bg {
-    height: 6px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 6px;
-  }
-  .cmv-bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.6s ease, background 0.4s;
-  }
-  .cmv-bar-labels {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(255,255,255,0.45);
-  }
-
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .kpi-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--gold);
-    border-radius: 10px;
-    padding: 16px;
-  }
-  .kpi-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .kpi-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--green-dark);
-  }
-  .kpi-value.full { grid-column: span 2; font-size: 22px; }
-
-  .section-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-    margin-top: 20px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* category bars */
-  .cat-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .cat-name {
-    font-size: 12px;
-    width: 110px;
-    flex-shrink: 0;
-    color: var(--text);
-  }
-  .cat-bar-bg {
-    flex: 1;
-    height: 6px;
-    background: var(--surface2);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .cat-bar-fill {
-    height: 100%;
-    background: var(--green-dark);
-    border-radius: 3px;
-    transition: width 0.5s;
-  }
-  .cat-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    width: 70px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  /* monthly chart */
-  .chart-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  .chart-bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 6px;
-    height: 80px;
-    margin-bottom: 6px;
-  }
-  .chart-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    height: 100%;
-    justify-content: flex-end;
-  }
-  .chart-bar {
-    width: 100%;
-    border-radius: 3px 3px 0 0;
-    transition: height 0.5s ease;
-    min-height: 2px;
-  }
-  .chart-month-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    text-align: center;
-  }
-  .chart-legend {
-    display: flex;
-    gap: 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-  }
-  .legend-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    margin-right: 4px;
-  }
-
-  /* ── FORMS ── */
-  .form-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-  .form-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--green-dark);
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--gold-light);
-  }
+  /* FORM CARDS */
+  .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .form-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: var(--green-dark); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--gold-light); }
 
   .field { margin-bottom: 14px; }
-  .field label {
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .field input, .field select, .field textarea {
-    width: 100%;
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    padding: 12px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  .field input:focus, .field select:focus {
-    border-color: var(--green-dark);
-    box-shadow: 0 0 0 2px rgba(27,67,50,0.08);
-  }
-  .field select option { background: #ffffff; }
+  .field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field select, .field textarea { width: 100%; background: var(--cream); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+  .field input:focus, .field select:focus { border-color: var(--green-dark); box-shadow: 0 0 0 2px rgba(27,67,50,0.08); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-  .field-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  /* itens NF */
+  /* ITEMS */
   .items-list { margin-bottom: 12px; }
-  .item-row {
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 8px;
-    position: relative;
-  }
-  .item-row-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .item-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-  }
-  .item-badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 4px;
-    letter-spacing: 0.08em;
-  }
+  .item-row { background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+  .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .item-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+  .item-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
   .item-badge.cmv { background: var(--green-light); color: var(--green); }
-  .item-badge.no-cmv { background: var(--surface2); color: var(--muted); }
-  .item-remove {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 18px;
-    cursor: pointer;
-    padding: 0 4px;
-    line-height: 1;
-  }
+  .item-badge.ncmv { background: var(--surface2); color: var(--muted); }
+  .item-remove { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
   .item-remove:hover { color: var(--red); }
+  .item-info { display: flex; justify-content: space-between; }
+  .item-desc { font-size: 12px; color: var(--text); flex: 1; }
+  .item-val { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--green-dark); }
 
-  .item-summary {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 4px;
-  }
-  .item-desc-preview {
-    font-size: 12px;
-    color: var(--text);
-    flex: 1;
-  }
-  .item-val-preview {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--green-dark);
-  }
+  .nf-summary { background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: 12px; }
+  .sum-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+  .sum-row.total { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px; font-weight: 700; font-size: 14px; color: var(--green-dark); }
+  .sum-row .lbl { color: var(--muted); }
+  .sum-row .val { font-family: 'DM Mono', monospace; }
+  .sum-row .val.g { color: var(--green); }
 
-  .add-item-btn {
-    width: 100%;
-    padding: 12px;
-    background: none;
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    color: var(--muted);
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.04em;
-  }
-  .add-item-btn:hover {
-    border-color: var(--green-dark);
-    color: var(--green-dark);
-    background: var(--green-light);
-  }
+  .add-btn { width: 100%; padding: 12px; background: none; border: 2px dashed var(--border); border-radius: 8px; color: var(--muted); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .add-btn:hover { border-color: var(--green-dark); color: var(--green-dark); background: var(--green-light); }
 
-  /* NF summary */
-  .nf-summary {
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 12px;
-  }
-  .nf-summary-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-  .nf-summary-row.total {
-    border-top: 1px solid var(--border);
-    padding-top: 8px;
-    margin-top: 4px;
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--green-dark);
-  }
-  .nf-summary-row .label { color: var(--muted); }
-  .nf-summary-row .val { font-family: 'DM Mono', monospace; }
-  .nf-summary-row .val.green { color: var(--green); }
-
-  /* ── BUTTONS ── */
-  .btn {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 10px;
-  }
-  .btn-primary {
-    background: var(--green-dark);
-    color: #ffffff;
-  }
+  /* BUTTONS */
+  .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; }
+  .btn-primary { background: var(--green-dark); color: #fff; }
   .btn-primary:hover { background: #133527; }
   .btn-primary:active { transform: scale(0.98); }
-  .btn-secondary {
-    background: var(--surface2);
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-gcom {
-    background: linear-gradient(135deg, #1b4332, #2d6a4f);
-    color: var(--gold);
-    border: 1px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .btn-gcom:hover { background: linear-gradient(135deg, #133527, #1b4332); }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-gcom { background: linear-gradient(135deg, #1b4332, #2d6a4f); color: var(--gold); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-  .btn-sm {
-    width: auto;
-    padding: 8px 16px;
-    font-size: 12px;
-    margin-bottom: 0;
-  }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 200;
-    align-items: flex-end;
-    justify-content: center;
-  }
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; justify-content: center; }
   .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px 20px 0 0;
-    padding: 24px 20px 20px;
-    width: 100%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: slideUp 0.3s ease;
-  }
-  @keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  .modal-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--green-dark);
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--gold-light);
-  }
-  .modal-close {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 22px;
-    cursor: pointer;
-    line-height: 1;
-  }
+  .modal { background: var(--surface); border-radius: 20px 20px 0 0; padding: 24px 20px 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; color: var(--green-dark); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--gold-light); }
+  .modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; }
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 90px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-size: 13px;
-    font-weight: 600;
-    opacity: 0;
-    transition: all 0.3s;
-    z-index: 300;
-    white-space: nowrap;
-    pointer-events: none;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  }
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  /* TOAST */
+  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 20px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 300; white-space: nowrap; pointer-events: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.success { border-color: var(--green); color: var(--green); }
   .toast.error { border-color: var(--red); color: var(--red); }
 
-  /* ── BOTTOM NAV ── */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0; right: 0;
-    background: var(--green-dark);
-    border-top: 2px solid var(--gold);
-    display: flex;
-    z-index: 100;
-  }
-  .bnav-btn {
-    flex: 1;
-    padding: 10px 4px 8px;
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.5);
-    font-family: 'Inter', sans-serif;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    transition: color 0.2s;
-  }
+  /* BOTTOM NAV */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--green-dark); border-top: 2px solid var(--gold); display: flex; z-index: 100; }
+  .bnav-btn { flex: 1; padding: 10px 4px 8px; background: none; border: none; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: color 0.2s; }
   .bnav-btn .icon { font-size: 20px; line-height: 1; }
   .bnav-btn.active { color: var(--gold); }
 
-  /* ── HISTORY LIST ── */
-  .history-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .history-left {}
-  .history-supplier {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 2px;
-    color: var(--text);
-  }
-  .history-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .history-right { text-align: right; }
-  .history-total {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: var(--green-dark);
-    margin-bottom: 2px;
-  }
-  .history-cmv-badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: var(--green-light);
-    color: var(--green);
-  }
+  /* HISTORY */
+  .hist-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .hist-left {}
+  .hist-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .hist-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .hist-right { display: flex; align-items: center; gap: 12px; }
+  .hist-val { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--green-dark); }
+  .hist-del { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px; }
+  .hist-del:hover { color: var(--red); }
+  .hist-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: var(--green-light); color: var(--green); margin-top: 4px; display: inline-block; }
 
-  /* ── EMPTY STATE ── */
-  .empty {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--muted);
-  }
+  .section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; margin-top: 20px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
   .empty-icon { font-size: 40px; margin-bottom: 12px; }
   .empty-text { font-size: 13px; line-height: 1.6; }
 
-  /* config */
-  .config-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .config-label { font-size: 13px; font-weight: 600; }
-  .config-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--gold);
-  }
-
-  /* month selector */
-  .month-selector {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  .month-arrow {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--green-dark);
-    font-size: 18px;
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-  }
-  .month-name {
-    flex: 1;
-    text-align: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--green-dark);
-  }
+  .steps { background: var(--cream); border-radius: 8px; padding: 14px; margin-bottom: 16px; border: 1px solid var(--border); }
+  .step { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+  .step:last-child { margin-bottom: 0; }
+  .step-num { background: var(--green-dark); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .step-text { font-size: 13px; color: var(--text); }
 </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div class="topbar-logo">CMV Control</div>
-  <div class="topbar-store">Spoleto · Loja A</div>
-</div>
-
-<!-- PAGES -->
-<!-- ═══════════════ DASHBOARD ═══════════════ -->
-<div class="page active" id="page-dashboard">
-  <div style="padding:20px">
-
-    <div class="month-selector">
-      <button class="month-arrow" onclick="changeMonth(-1)">‹</button>
-      <div class="month-name" id="dash-month-name">Maio 2026</div>
-      <button class="month-arrow" onclick="changeMonth(1)">›</button>
-    </div>
-    <button class="btn btn-secondary" id="sync-btn" onclick="sincronizarPlanilha()" style="margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;padding:10px">
-      <span id="sync-icon">🔄</span> <span id="sync-label">Sincronizar com Planilha</span>
-    </button>
-
-    <!-- CMV Hero -->
-    <div class="cmv-hero">
-      <div class="cmv-pct green" id="dash-cmv-pct">—</div>
-      <div class="cmv-status green" id="dash-cmv-status">Aguardando dados</div>
-      <div class="cmv-bar-bg">
-        <div class="cmv-bar-fill" id="dash-bar" style="width:0%;background:var(--green)"></div>
-      </div>
-      <div class="cmv-bar-labels">
-        <span>0%</span>
-        <span id="meta-verde-label">30% ✓</span>
-        <span id="meta-amarelo-label">33% ⚠</span>
-        <span>40%</span>
-      </div>
-    </div>
-
-    <!-- KPIs -->
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Faturamento</div>
-        <div class="kpi-value" id="dash-fat">R$ —</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">CMV (R$)</div>
-        <div class="kpi-value" id="dash-cmv-rs">R$ —</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Compras Consumo</div>
-        <div class="kpi-value" id="dash-compras">R$ —</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Estoque Líq.</div>
-        <div class="kpi-value" id="dash-estoque">R$ —</div>
-      </div>
-    </div>
-
-    <!-- Composição por subcategoria -->
-    <div class="section-title">Consumo por Subcategoria</div>
-    <div id="dash-cats"></div>
-
-    <!-- Gráfico mensal -->
-    <div class="section-title">Evolução CMV % (ano)</div>
-    <div class="chart-wrap">
-      <div class="chart-bars" id="chart-bars"></div>
-      <div class="chart-legend">
-        <span><span class="legend-dot" style="background:var(--green)"></span>Verde &lt;<span id="leg-verde">30</span>%</span>
-        <span><span class="legend-dot" style="background:var(--yellow)"></span>Amarelo &lt;<span id="leg-amarelo">33</span>%</span>
-        <span><span class="legend-dot" style="background:var(--red)"></span>Vermelho</span>
-      </div>
-    </div>
-
+  <div>
+    <div class="topbar-logo">Spoleto</div>
   </div>
+  <div class="topbar-sub">CMV Control</div>
 </div>
 
-<!-- ═══════════════ NOTA FISCAL ═══════════════ -->
-<div class="page" id="page-nf">
-  <div style="padding:20px">
-    <div class="form-card">
-      <div class="form-title">📋 Nova Nota Fiscal</div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Data</label>
-          <input type="date" id="nf-data">
-        </div>
-        <div class="field">
-          <label>Nº NF (opc.)</label>
-          <input type="text" id="nf-numero" placeholder="00000">
-        </div>
+<!-- ═══ NOTAS FISCAIS ═══ -->
+<div class="page active" id="page-nf">
+  <div class="form-card">
+    <div class="form-title">📋 Nova Nota Fiscal</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Data Recebimento</label>
+        <input type="date" id="nf-data">
       </div>
       <div class="field">
-        <label>Fornecedor</label>
-        <input type="text" id="nf-fornecedor" placeholder="Ex: Frigorifico São Paulo">
-      </div>
-
-      <div class="section-title" style="margin-top:4px">Itens da Nota</div>
-      <div class="items-list" id="items-list"></div>
-      <button class="add-item-btn" onclick="openAddItem()">+ Adicionar Item</button>
-
-      <div class="nf-summary" id="nf-summary" style="display:none">
-        <div class="nf-summary-row">
-          <span class="label">Total CMV (Consumo)</span>
-          <span class="val green" id="sum-cmv">R$ 0,00</span>
-        </div>
-        <div class="nf-summary-row">
-          <span class="label">Total Não-CMV</span>
-          <span class="val" id="sum-ncmv">R$ 0,00</span>
-        </div>
-        <div class="nf-summary-row total">
-          <span class="label">Total NF</span>
-          <span class="val" id="sum-total">R$ 0,00</span>
-        </div>
+        <label>Nº NF (opc.)</label>
+        <input type="text" id="nf-numero" placeholder="00000">
       </div>
     </div>
-
-    <button class="btn btn-primary" onclick="salvarNF()">Salvar Nota Fiscal</button>
-    <button class="btn btn-secondary" onclick="limparNF()">Limpar</button>
-
-    <div class="section-title">Notas Lançadas</div>
-    <div id="notas-history"></div>
+    <div class="field">
+      <label>Fornecedor</label>
+      <input type="text" id="nf-fornecedor" placeholder="Ex: Frigorífico SP">
+    </div>
+    <div class="field">
+      <label>Vencimento (opc.)</label>
+      <input type="date" id="nf-vencimento">
+    </div>
+    <div class="section-title" style="margin-top:4px">Itens da Nota</div>
+    <div class="items-list" id="items-list"></div>
+    <button class="add-btn" onclick="openAddItem()">+ Adicionar Item</button>
+    <div class="nf-summary" id="nf-summary" style="display:none">
+      <div class="sum-row"><span class="lbl">CMV (Consumo)</span><span class="val g" id="sum-cmv">R$ 0,00</span></div>
+      <div class="sum-row"><span class="lbl">Não-CMV</span><span class="val" id="sum-ncmv">R$ 0,00</span></div>
+      <div class="sum-row total"><span>Total NF</span><span class="val" id="sum-total">R$ 0,00</span></div>
+    </div>
   </div>
+  <button class="btn btn-primary" onclick="salvarNF()">Salvar Nota Fiscal</button>
+  <button class="btn btn-secondary" onclick="limparNF()">Limpar</button>
 </div>
 
-<!-- ═══════════════ FATURAMENTO ═══════════════ -->
+<!-- ═══ FATURAMENTO ═══ -->
 <div class="page" id="page-fat">
-  <div style="padding:20px">
-    <div class="form-card">
-      <div class="form-title">💰 Lançar Faturamento</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
-        Insira o faturamento líquido do período (já descontado taxas e estornos).
-      </p>
-
-      <div class="field">
-        <label>Data</label>
-        <input type="date" id="fat-data">
-      </div>
-      <div class="field">
-        <label>Faturamento Líquido (R$)</label>
-        <input type="number" id="fat-valor" placeholder="0,00" step="0.01" inputmode="decimal">
-      </div>
-      <div class="field">
-        <label>Observação (opc.)</label>
-        <input type="text" id="fat-obs" placeholder="Ex: Mês fechado Jan">
-      </div>
+  <div class="form-card">
+    <div class="form-title">💰 Lançar Faturamento</div>
+    <div class="field">
+      <label>Data</label>
+      <input type="date" id="fat-data">
     </div>
-
-    <button class="btn btn-gcom" onclick="importarGCOM()">
-      <span>⬇</span> Importar FAT do GCOM
-    </button>
-    <button class="btn btn-primary" onclick="salvarFaturamento()">Salvar Faturamento</button>
-
-    <div class="section-title">Faturamentos Lançados</div>
-    <div id="fat-history"></div>
+    <div class="field">
+      <label>Faturamento Líquido (R$)</label>
+      <input type="number" id="fat-valor" placeholder="0,00" step="0.01" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label>Observação (opc.)</label>
+      <input type="text" id="fat-obs" placeholder="Ex: Semana 1 — Maio">
+    </div>
   </div>
+  <button class="btn btn-gcom" onclick="importarGCOM()">⬇ Importar FAT do GCOM</button>
+  <button class="btn btn-primary" onclick="salvarFaturamento()">Salvar Faturamento</button>
 </div>
 
-<!-- ═══════════════ ESTOQUE ═══════════════ -->
-<div class="page" id="page-estoque">
-  <div style="padding:20px">
-    <div class="form-card">
-      <div class="form-title">📦 Lançar Estoque</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
-        Conte apenas produtos de <strong style="color:var(--accent)">consumo</strong> (não inclua limpeza, utensílios, embalagens).
-      </p>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Mês</label>
-          <select id="est-mes">
-            <option value="1">Janeiro</option><option value="2">Fevereiro</option>
-            <option value="3">Março</option><option value="4">Abril</option>
-            <option value="5">Maio</option><option value="6">Junho</option>
-            <option value="7">Julho</option><option value="8">Agosto</option>
-            <option value="9">Setembro</option><option value="10">Outubro</option>
-            <option value="11">Novembro</option><option value="12">Dezembro</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Tipo</label>
-          <select id="est-tipo">
-            <option value="Inicial">Inicial</option>
-            <option value="Final">Final</option>
-          </select>
-        </div>
+<!-- ═══ ESTOQUE ═══ -->
+<div class="page" id="page-est">
+  <div class="form-card">
+    <div class="form-title">📦 Lançar Estoque</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+      Conte apenas produtos de <strong style="color:var(--green-dark)">consumo</strong> no último dia do mês. O sistema usa automaticamente como Final do mês atual e Inicial do próximo.
+    </p>
+    <div class="field-row">
+      <div class="field">
+        <label>Mês</label>
+        <select id="est-mes">
+          <option value="1">Janeiro</option><option value="2">Fevereiro</option>
+          <option value="3">Março</option><option value="4">Abril</option>
+          <option value="5">Maio</option><option value="6">Junho</option>
+          <option value="7">Julho</option><option value="8">Agosto</option>
+          <option value="9">Setembro</option><option value="10">Outubro</option>
+          <option value="11">Novembro</option><option value="12">Dezembro</option>
+        </select>
       </div>
       <div class="field">
-        <label>Valor do Estoque (R$)</label>
-        <input type="number" id="est-valor" placeholder="0,00" step="0.01" inputmode="decimal">
-      </div>
-      <div class="field">
-        <label>Observação (opc.)</label>
-        <input type="text" id="est-obs" placeholder="">
+        <label>Ano</label>
+        <input type="number" id="est-ano" value="2026">
       </div>
     </div>
-    <button class="btn btn-primary" onclick="salvarEstoque()">Salvar Estoque</button>
-
-    <div class="section-title">Estoques Lançados</div>
-    <div id="est-history"></div>
+    <div class="field">
+      <label>Valor do Estoque (R$)</label>
+      <input type="number" id="est-valor" placeholder="0,00" step="0.01" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label>Observação (opc.)</label>
+      <input type="text" id="est-obs" placeholder="">
+    </div>
   </div>
+  <button class="btn btn-primary" onclick="salvarEstoque()">Salvar Estoque</button>
 </div>
 
-<!-- ═══════════════ EMPRÉSTIMOS ═══════════════ -->
+<!-- ═══ EMPRÉSTIMOS ═══ -->
 <div class="page" id="page-emp">
-  <div style="padding:20px">
-    <div class="form-card">
-      <div class="form-title">🔄 Empréstimo entre Lojas</div>
-
+  <div class="form-card">
+    <div class="form-title">🔄 Empréstimo entre Lojas</div>
+    <div class="field">
+      <label>Data</label>
+      <input type="date" id="emp-data">
+    </div>
+    <div class="field-row">
       <div class="field">
-        <label>Data</label>
-        <input type="date" id="emp-data">
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Tipo</label>
-          <select id="emp-tipo">
-            <option value="Cedi">Cedi (dei para outra loja)</option>
-            <option value="Recebi">Recebi (recebi de outra loja)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Outra Loja</label>
-          <select id="emp-loja">
-            <option value="Loja B">Loja B</option>
-            <option value="Loja C">Loja C</option>
-          </select>
-        </div>
+        <label>Tipo</label>
+        <select id="emp-tipo">
+          <option value="Cedi">Cedi (dei pra outra loja)</option>
+          <option value="Recebi">Recebi (recebi de outra loja)</option>
+        </select>
       </div>
       <div class="field">
-        <label>Descrição do Produto</label>
-        <input type="text" id="emp-desc" placeholder="Ex: 10kg filé mignon">
-      </div>
-      <div class="field">
-        <label>Valor (R$)</label>
-        <input type="number" id="emp-valor" placeholder="0,00" step="0.01" inputmode="decimal">
-      </div>
-      <div class="field">
-        <label>Observação (opc.)</label>
-        <input type="text" id="emp-obs" placeholder="">
+        <label>Outra Loja</label>
+        <select id="emp-loja">
+          <option value="Loja B">Loja B</option>
+          <option value="Loja C">Loja C</option>
+        </select>
       </div>
     </div>
-    <button class="btn btn-primary" onclick="salvarEmprestimo()">Salvar Empréstimo</button>
-
-    <div class="section-title">Empréstimos Lançados</div>
-    <div id="emp-history"></div>
+    <div class="field">
+      <label>Descrição do Produto</label>
+      <input type="text" id="emp-desc" placeholder="Ex: 10kg filé mignon">
+    </div>
+    <div class="field">
+      <label>Valor (R$)</label>
+      <input type="number" id="emp-valor" placeholder="0,00" step="0.01" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label>Observação (opc.)</label>
+      <input type="text" id="emp-obs" placeholder="">
+    </div>
   </div>
+  <button class="btn btn-primary" onclick="salvarEmprestimo()">Salvar Empréstimo</button>
 </div>
 
-<!-- ═══════════════ CONFIG ═══════════════ -->
-<div class="page" id="page-config">
-  <div style="padding:20px">
-    <div class="section-title">Configurações</div>
-
-    <div class="form-card">
-      <div class="form-title">🏪 Identificação</div>
-      <div class="field">
-        <label>Nome desta Loja</label>
-        <input type="text" id="cfg-loja-a" value="Loja A">
-      </div>
-      <div class="field">
-        <label>Nome da Loja B</label>
-        <input type="text" id="cfg-loja-b" value="Loja B">
-      </div>
-      <div class="field">
-        <label>Nome da Loja C</label>
-        <input type="text" id="cfg-loja-c" value="Loja C">
-      </div>
-    </div>
-
-    <div class="form-card">
-      <div class="form-title">🎯 Metas de CMV</div>
-      <div class="field-row">
-        <div class="field">
-          <label>🟢 Verde abaixo de</label>
-          <input type="number" id="cfg-verde" value="30" step="0.1"> 
-        </div>
-        <div class="field">
-          <label>🟡 Amarelo abaixo de</label>
-          <input type="number" id="cfg-amarelo" value="33" step="0.1">
-        </div>
-      </div>
-    </div>
-
-    <div class="form-card">
-      <div class="form-title">🔗 Integração Google Sheets</div>
-      <div class="field">
-        <label>URL do Apps Script (Web App)</label>
-        <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/...">
-      </div>
-      <p style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6">
-        Cole aqui a URL gerada ao publicar o Google Apps Script. Veja o guia de setup.
-      </p>
-    </div>
-
-    <div class="form-card">
-      <div class="form-title">🔐 GCOM (Importação automática)</div>
-      <div class="field">
-        <label>Empresa</label>
-        <input type="text" id="cfg-gcom-empresa" placeholder="Ex: risotos">
-      </div>
-      <div class="field">
-        <label>Usuário GCOM</label>
-        <input type="text" id="cfg-gcom-user" placeholder="usuario@loja" autocomplete="username">
-      </div>
-      <div class="field">
-        <label>Senha GCOM</label>
-        <input type="password" id="cfg-gcom-pass" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <p style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6">
-        Credenciais salvas apenas localmente neste dispositivo. Nunca enviadas para servidores externos.<br><br>
-        ⚠️ <strong style="color:var(--accent)">Como funciona:</strong> ao clicar em "Importar FAT do GCOM", o app abre o GCOM já na tela certa. Por restrições de segurança do navegador, o login automático não é possível sem um servidor intermediário — mas o link leva direto para a tela de login com os campos prontos para preencher.
-      </p>
-    </div>
-
-    <button class="btn btn-primary" onclick="salvarConfig()">Salvar Configurações</button>
-  </div>
+<!-- ═══ HISTÓRICO ═══ -->
+<div class="page" id="page-hist">
+  <div id="hist-content"></div>
 </div>
 
-<!-- ═══════════════ MODAL ITEM NF ═══════════════ -->
+
+<!-- ═══ DESPERDÍCIOS ═══ -->
+<div class="page" id="page-desp">
+  <div class="form-card">
+    <div class="form-title">🗑️ Lançar Desperdício</div>
+    <div class="field">
+      <label>Data</label>
+      <input type="date" id="desp-data">
+    </div>
+    <div class="field">
+      <label>Produto</label>
+      <input type="text" id="desp-busca" placeholder="Digite para buscar..." oninput="filtrarProdutos()" autocomplete="off">
+      <div id="desp-sugestoes" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;max-height:200px;overflow-y:auto;margin-top:4px;box-shadow:0 4px 12px rgba(0,0,0,0.1)"></div>
+      <input type="hidden" id="desp-produto">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Unidade</label>
+        <input type="text" id="desp-unidade" placeholder="Auto" readonly style="background:var(--surface2);color:var(--muted)">
+      </div>
+      <div class="field">
+        <label>Custo Unit. (R$)</label>
+        <input type="text" id="desp-custo" placeholder="Auto" readonly style="background:var(--surface2);color:var(--muted)">
+      </div>
+    </div>
+    <div class="field">
+      <label>Categoria</label>
+      <input type="text" id="desp-categoria" placeholder="Auto" readonly style="background:var(--surface2);color:var(--muted)">
+    </div>
+    <div class="field">
+      <label>Quantidade</label>
+      <input type="number" id="desp-qtd" placeholder="0" step="0.001" inputmode="decimal" oninput="calcPerda()">
+    </div>
+    <div class="field">
+      <label>Perda (R$)</label>
+      <input type="text" id="desp-perda" placeholder="Calculado automaticamente" readonly style="background:var(--gold-light);color:var(--green-dark);font-weight:700">
+    </div>
+    <div class="field">
+      <label>Motivo</label>
+      <select id="desp-motivo">
+        <option value="">Selecione...</option>
+        <option>Produto danificado</option>
+        <option>Produto impróprio para consumo</option>
+        <option>Problema no preparo do item</option>
+        <option>Fora da meta de rendimento</option>
+        <option>Pedido errado</option>
+        <option>Troca / Reenvio</option>
+        <option>Vencimento</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div class="field" id="desp-outro-field" style="display:none">
+      <label>Qual?</label>
+      <input type="text" id="desp-outro" placeholder="Descreva o motivo">
+    </div>
+  </div>
+  <button class="btn btn-primary" onclick="salvarDesperdicio()">Salvar Desperdício</button>
+</div>
+
+<!-- MODAL ITEM NF -->
 <div class="modal-overlay" id="modal-item">
   <div class="modal">
     <div class="modal-title">
@@ -1062,7 +369,7 @@
         <input type="number" id="item-qtd" value="1" step="0.001" inputmode="decimal">
       </div>
       <div class="field">
-        <label>Valor Total (R$)</label>
+        <label>Valor Unit. (R$)</label>
         <input type="number" id="item-valor" placeholder="0,00" step="0.01" inputmode="decimal">
       </div>
     </div>
@@ -1070,43 +377,32 @@
   </div>
 </div>
 
-<!-- MODAL GCOM INSTRUÇÃO -->
+<!-- MODAL GCOM -->
 <div class="modal-overlay" id="modal-gcom">
   <div class="modal">
     <div class="modal-title">
       📊 Importar FAT do GCOM
       <button class="modal-close" onclick="closeModal('modal-gcom')">×</button>
     </div>
-    <div style="background:var(--cream);border-radius:8px;padding:14px;margin-bottom:16px;border:1px solid var(--border)">
-      <div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start">
-        <span style="background:var(--green-dark);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</span>
-        <span style="font-size:13px;color:var(--text)">O GCOM abriu em outra aba — <strong>faça login</strong> se necessário</span>
-      </div>
-      <div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start">
-        <span style="background:var(--green-dark);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</span>
-        <span style="font-size:13px;color:var(--text)">Veja o valor do <strong style="color:var(--green-dark)">FAT</strong> na tela principal</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:flex-start">
-        <span style="background:var(--green-dark);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</span>
-        <span style="font-size:13px;color:var(--text)">Volte aqui e <strong>digite o valor</strong> abaixo</span>
-      </div>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><span class="step-text">O GCOM abriu em outra aba — faça login se necessário</span></div>
+      <div class="step"><span class="step-num">2</span><span class="step-text">Veja o valor do <strong style="color:var(--green-dark)">FAT</strong> na tela principal</span></div>
+      <div class="step"><span class="step-num">3</span><span class="step-text">Volte aqui e digite o valor abaixo</span></div>
     </div>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:16px">
-      💡 Após o primeiro login o GCOM fica salvo no navegador — nas próximas vezes abre direto no dashboard!
-    </p>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:16px">💡 Após o primeiro login o GCOM fica salvo — nas próximas vezes abre direto!</p>
     <div class="field">
       <label>FAT do período (R$)</label>
-      <input type="number" id="gcom-fat-valor" placeholder="0,00" step="0.01" inputmode="decimal">
+      <input type="number" id="gcom-valor" placeholder="0,00" step="0.01" inputmode="decimal">
     </div>
     <div class="field">
       <label>Data de referência</label>
-      <input type="date" id="gcom-fat-data">
+      <input type="date" id="gcom-data">
     </div>
     <div class="field">
       <label>Observação (opc.)</label>
-      <input type="text" id="gcom-fat-obs" placeholder="Ex: Maio 2026 — semana 1">
+      <input type="text" id="gcom-obs" placeholder="Ex: Maio 2026 — semana 1">
     </div>
-    <button class="btn btn-primary" onclick="confirmarFatGCOM()">✓ Salvar Faturamento</button>
+    <button class="btn btn-primary" onclick="confirmarGCOM()">✓ Salvar Faturamento</button>
     <button class="btn btn-secondary" onclick="closeModal('modal-gcom')">Cancelar</button>
   </div>
 </div>
@@ -1116,89 +412,52 @@
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <button class="bnav-btn active" onclick="navTo('dashboard',this)">
-    <span class="icon">📊</span>Dashboard
-  </button>
-  <button class="bnav-btn" onclick="navTo('nf',this)">
-    <span class="icon">📋</span>Notas
-  </button>
-  <button class="bnav-btn" onclick="navTo('fat',this)">
-    <span class="icon">💰</span>Fat.
-  </button>
-  <button class="bnav-btn" onclick="navTo('estoque',this)">
-    <span class="icon">📦</span>Estoque
-  </button>
-  <button class="bnav-btn" onclick="navTo('emp',this)">
-    <span class="icon">🔄</span>Empr.
-  </button>
-  <button class="bnav-btn" onclick="navTo('config',this)">
-    <span class="icon">⚙️</span>Config
-  </button>
+  <button class="bnav-btn active" onclick="navTo('nf',this)"><span class="icon">📋</span>Notas</button>
+  <button class="bnav-btn" onclick="navTo('fat',this)"><span class="icon">💰</span>Fat.</button>
+  <button class="bnav-btn" onclick="navTo('est',this)"><span class="icon">📦</span>Estoque</button>
+  <button class="bnav-btn" onclick="navTo('emp',this)"><span class="icon">🔄</span>Empr.</button>
+  <button class="bnav-btn" onclick="navTo('desp',this)"><span class="icon">🗑️</span>Desp.</button>
+  <button class="bnav-btn" onclick="navTo('hist',this)"><span class="icon">📜</span>Histórico</button>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════════
-const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
-               'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-
+// ── STATE ──────────────────────────────────────────────────────────────
 let state = {
-  config: { lojaA:'Loja A', lojaB:'Loja B', lojaC:'Loja C', verde:30, amarelo:33, scriptUrl:'', gcomEmpresa:'', gcomUser:'', gcomPass:'' },
-  notas: [],       // { id, data, fornecedor, numero, itens:[{desc,cat,subcat,qtd,valor}] }
-  faturamentos: [], // { id, data, valor, obs }
-  estoques: [],     // { id, mes, ano, tipo, valor, obs }
-  emprestimos: [],  // { id, data, tipo, loja, desc, valor, obs }
-  viewMonth: new Date().getMonth() + 1,
-  viewYear: new Date().getFullYear(),
+  config: { scriptUrl: '' },
+  notas: [],
+  faturamentos: [],
+  estoques: [],
+  emprestimos: [],
+  'desperdícios': []
 };
+let currentItems = [];
 
-let currentItems = []; // itens sendo editados na NF atual
+function save() { try { localStorage.setItem('cmv_v1', JSON.stringify(state)); } catch(e){} }
+function load() { try { const s = localStorage.getItem('cmv_v1'); if(s) state = {...state, ...JSON.parse(s)}; } catch(e){} }
 
-// ══════════════════════════════════════════════════════
-// PERSISTENCE (localStorage)
-// ══════════════════════════════════════════════════════
-function save() {
-  try { localStorage.setItem('cmv_state', JSON.stringify(state)); } catch(e){}
-}
-function load() {
-  try {
-    const s = localStorage.getItem('cmv_state');
-    if (s) state = { ...state, ...JSON.parse(s) };
-  } catch(e){}
-}
-
-// ══════════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════════
+// ── NAV ────────────────────────────────────────────────────────────────
 function navTo(page, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
   btn.classList.add('active');
-  if (page === 'dashboard') renderDashboard();
-  if (page === 'fat') renderFatHistory();
-  if (page === 'estoque') renderEstHistory();
-  if (page === 'emp') renderEmpHistory();
-  if (page === 'config') loadConfig();
+  if (page === 'hist') renderHist();
 }
 
-// ══════════════════════════════════════════════════════
-// MODAL
-// ══════════════════════════════════════════════════════
+// ── MODAL ──────────────────────────────────────────────────────────────
 function openAddItem() {
   document.getElementById('item-desc').value = '';
   document.getElementById('item-cat').value = 'Consumo';
-  document.getElementById('item-valor').value = '';
   document.getElementById('item-qtd').value = '1';
+  document.getElementById('item-valor').value = '';
   updateSubcat();
   document.getElementById('modal-item').classList.add('open');
-  setTimeout(()=>document.getElementById('item-desc').focus(), 100);
+  setTimeout(() => document.getElementById('item-desc').focus(), 100);
 }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function updateSubcat() {
-  const cat = document.getElementById('item-cat').value;
-  document.getElementById('subcat-field').style.display = cat === 'Consumo' ? 'block' : 'none';
+  document.getElementById('subcat-field').style.display =
+    document.getElementById('item-cat').value === 'Consumo' ? 'block' : 'none';
 }
 
 function confirmarItem() {
@@ -1206,186 +465,119 @@ function confirmarItem() {
   const cat = document.getElementById('item-cat').value;
   const subcat = cat === 'Consumo' ? document.getElementById('item-subcat').value : '';
   const qtd = parseFloat(document.getElementById('item-qtd').value) || 1;
-  const valor = parseFloat(document.getElementById('item-valor').value);
-  if (!desc || !valor) { toast('Preencha descrição e valor', 'error'); return; }
-  currentItems.push({ desc, cat, subcat, qtd, valor });
+  const valorUnit = parseFloat(document.getElementById('item-valor').value);
+  if (!desc || !valorUnit) { toast('Preencha descrição e valor', 'error'); return; }
+  const valorTotal = parseFloat((qtd * valorUnit).toFixed(2));
+  currentItems.push({ desc, cat, subcat, qtd, valorUnit, valor: valorTotal });
   closeModal('modal-item');
   renderItems();
 }
 
-function removeItem(idx) {
-  currentItems.splice(idx, 1);
-  renderItems();
-}
+function removeItem(idx) { currentItems.splice(idx, 1); renderItems(); }
 
 function renderItems() {
   const list = document.getElementById('items-list');
-  const summary = document.getElementById('nf-summary');
-  if (currentItems.length === 0) { list.innerHTML = ''; summary.style.display='none'; return; }
-
+  const sum = document.getElementById('nf-summary');
+  if (!currentItems.length) { list.innerHTML = ''; sum.style.display = 'none'; return; }
   list.innerHTML = currentItems.map((it, i) => `
     <div class="item-row">
-      <div class="item-row-header">
+      <div class="item-header">
         <span class="item-num">Item ${i+1}</span>
-        <span class="item-badge ${it.cat==='Consumo'?'cmv':'no-cmv'}">${it.cat==='Consumo'?'✓ CMV':'Não-CMV'}</span>
+        <span class="item-badge ${it.cat==='Consumo'?'cmv':'ncmv'}">${it.cat==='Consumo'?'✓ CMV':'Não-CMV'}</span>
         <button class="item-remove" onclick="removeItem(${i})">×</button>
       </div>
-      <div class="item-summary">
-        <span class="item-desc-preview">${it.desc}${it.subcat?' · '+it.subcat:''}</span>
-        <span class="item-val-preview">${fmtR(it.valor)}</span>
+      <div class="item-info">
+        <span class="item-desc">${it.desc}${it.subcat?' · '+it.subcat:''}</span>
+        <span class="item-val">${fmtR(it.valor)}</span>
       </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">${it.cat}</div>
-    </div>
-  `).join('');
-
-  const totalCMV = currentItems.filter(i=>i.cat==='Consumo').reduce((a,i)=>a+i.valor,0);
-  const totalNCMV = currentItems.filter(i=>i.cat!=='Consumo').reduce((a,i)=>a+i.valor,0);
-  document.getElementById('sum-cmv').textContent = fmtR(totalCMV);
-  document.getElementById('sum-ncmv').textContent = fmtR(totalNCMV);
-  document.getElementById('sum-total').textContent = fmtR(totalCMV+totalNCMV);
-  summary.style.display = 'block';
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">${it.cat} · ${it.qtd}x ${fmtR(it.valorUnit)}</div>
+    </div>`).join('');
+  const cmv = currentItems.filter(i=>i.cat==='Consumo').reduce((a,i)=>a+i.valor,0);
+  const ncmv = currentItems.filter(i=>i.cat!=='Consumo').reduce((a,i)=>a+i.valor,0);
+  document.getElementById('sum-cmv').textContent = fmtR(cmv);
+  document.getElementById('sum-ncmv').textContent = fmtR(ncmv);
+  document.getElementById('sum-total').textContent = fmtR(cmv+ncmv);
+  sum.style.display = 'block';
 }
 
-// ══════════════════════════════════════════════════════
-// SALVAR NOTA FISCAL
-// ══════════════════════════════════════════════════════
+// ── SALVAR NF ──────────────────────────────────────────────────────────
 function salvarNF() {
   const data = document.getElementById('nf-data').value;
   const fornecedor = document.getElementById('nf-fornecedor').value.trim();
   const numero = document.getElementById('nf-numero').value.trim();
+  const vencimento = document.getElementById('nf-vencimento').value;
   if (!data) { toast('Informe a data', 'error'); return; }
   if (!fornecedor) { toast('Informe o fornecedor', 'error'); return; }
-  if (currentItems.length === 0) { toast('Adicione pelo menos 1 item', 'error'); return; }
-
-  const nota = { id: Date.now(), data, fornecedor, numero, itens: [...currentItems] };
+  if (!currentItems.length) { toast('Adicione pelo menos 1 item', 'error'); return; }
+  const nota = { id: Date.now(), data, fornecedor, numero, vencimento, itens: [...currentItems] };
   state.notas.push(nota);
   save();
-  enviarParaSheets('nota', nota);
+  enviar('nota', nota);
   toast('Nota fiscal salva! ✓', 'success');
   limparNF();
-  renderNotasHistory();
 }
 
 function limparNF() {
   document.getElementById('nf-data').value = today();
   document.getElementById('nf-fornecedor').value = '';
   document.getElementById('nf-numero').value = '';
+  document.getElementById('nf-vencimento').value = '';
   currentItems = [];
   renderItems();
 }
 
-function renderNotasHistory() {
-  const el = document.getElementById('notas-history');
-  if (!el) return;
-  const sorted = [...state.notas].sort((a,b)=>b.data.localeCompare(a.data)).slice(0,15);
-  if (sorted.length === 0) { el.innerHTML = emptyState('Nenhuma nota lançada ainda'); return; }
-  el.innerHTML = sorted.map(n => {
-    const totalCMV = n.itens.filter(i=>i.cat==='Consumo').reduce((a,i)=>a+i.valor,0);
-    const total = n.itens.reduce((a,i)=>a+i.valor,0);
-    return `
-    <div class="history-item">
-      <div class="history-left">
-        <div class="history-supplier">${n.fornecedor}</div>
-        <div class="history-date">${fmtDate(n.data)} · ${n.itens.length} iten(s)${n.numero?' · NF '+n.numero:''}</div>
-        ${totalCMV > 0 ? `<span class="history-cmv-badge" style="margin-top:4px;display:inline-block">CMV ${fmtR(totalCMV)}</span>` : ''}
-      </div>
-      <div class="history-right" style="display:flex;align-items:center;gap:12px">
-        <div class="history-total">${fmtR(total)}</div>
-        <button onclick="deletarNota(${n.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ══════════════════════════════════════════════════════
-// FATURAMENTO
-// ══════════════════════════════════════════════════════
+// ── FATURAMENTO ────────────────────────────────────────────────────────
 function salvarFaturamento() {
   const data = document.getElementById('fat-data').value;
   const valor = parseFloat(document.getElementById('fat-valor').value);
   const obs = document.getElementById('fat-obs').value.trim();
-  if (!data) { toast('Informe a data', 'error'); return; }
-  if (!valor) { toast('Informe o valor', 'error'); return; }
-
+  if (!data || !valor) { toast('Preencha data e valor', 'error'); return; }
   const fat = { id: Date.now(), data, valor, obs };
   state.faturamentos.push(fat);
   save();
-  enviarParaSheets('faturamento', fat);
+  enviar('faturamento', fat);
   toast('Faturamento salvo! ✓', 'success');
   document.getElementById('fat-valor').value = '';
   document.getElementById('fat-obs').value = '';
-  renderFatHistory();
 }
 
-function renderFatHistory() {
-  const el = document.getElementById('fat-history');
-  const sorted = [...state.faturamentos].sort((a,b)=>b.data.localeCompare(a.data)).slice(0,10);
-  if (sorted.length === 0) { el.innerHTML = emptyState('Nenhum faturamento lançado ainda'); return; }
-  el.innerHTML = sorted.map(f=>`
-    <div class="history-item">
-      <div class="history-left">
-        <div class="history-supplier">${f.obs || 'Faturamento'}</div>
-        <div class="history-date">${fmtDate(f.data)}</div>
-      </div>
-      <div class="history-right" style="display:flex;align-items:center;gap:12px">
-        <div class="history-total">${fmtR(f.valor)}</div>
-        <button onclick="deletarFaturamento(${f.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
-      </div>
-    </div>
-  `).join('');
+function importarGCOM() {
+  window.open('https://www3.gcom.com.br/novoerp/#/novoerp/dashlet', 'gcom');
+  document.getElementById('gcom-data').value = today();
+  document.getElementById('gcom-valor').value = '';
+  document.getElementById('gcom-obs').value = '';
+  setTimeout(() => document.getElementById('modal-gcom').classList.add('open'), 500);
 }
 
-async function importarGCOM() {
-  // Abre direto no dashboard do GCOM — se já estiver logado, vai direto
-  // Se não estiver logado, o GCOM redireciona para o login automaticamente
-  // Depois do primeiro login, o navegador salva a sessão e não precisa mais
-  const url = 'https://www3.gcom.com.br/novoerp/#/novoerp/dashlet';
-  const gcomTab = window.open(url, 'gcom_window');
-  toast('Abrindo GCOM... pegue o FAT e volte aqui 📊', 'success');
-  showGcomModal();
+function confirmarGCOM() {
+  const valor = parseFloat(document.getElementById('gcom-valor').value);
+  const data = document.getElementById('gcom-data').value;
+  const obs = document.getElementById('gcom-obs').value.trim();
+  if (!valor || !data) { toast('Preencha valor e data', 'error'); return; }
+  closeModal('modal-gcom');
+  document.getElementById('fat-data').value = data;
+  document.getElementById('fat-valor').value = valor;
+  document.getElementById('fat-obs').value = obs || 'Importado do GCOM';
+  navTo('fat', document.querySelectorAll('.bnav-btn')[1]);
+  toast('Valor preenchido! Confirme e salve ✓', 'success');
 }
 
-// ══════════════════════════════════════════════════════
-// ESTOQUE
-// ══════════════════════════════════════════════════════
+// ── ESTOQUE ────────────────────────────────────────────────────────────
 function salvarEstoque() {
   const mes = parseInt(document.getElementById('est-mes').value);
-  const tipo = document.getElementById('est-tipo').value;
+  const ano = parseInt(document.getElementById('est-ano').value);
   const valor = parseFloat(document.getElementById('est-valor').value);
   const obs = document.getElementById('est-obs').value.trim();
-  const ano = state.viewYear;
   if (!valor) { toast('Informe o valor do estoque', 'error'); return; }
-
-  const est = { id: Date.now(), mes, ano, tipo, valor, obs };
+  const est = { id: Date.now(), mes, ano, valor, obs };
   state.estoques.push(est);
   save();
-  enviarParaSheets('estoque', est);
-  toast(`Estoque ${tipo} salvo! ✓`, 'success');
+  enviar('estoque', est);
+  toast('Estoque salvo! ✓', 'success');
   document.getElementById('est-valor').value = '';
-  renderEstHistory();
 }
 
-function renderEstHistory() {
-  const el = document.getElementById('est-history');
-  const sorted = [...state.estoques].sort((a,b)=>b.id-a.id).slice(0,10);
-  if (sorted.length === 0) { el.innerHTML = emptyState('Nenhum estoque lançado ainda'); return; }
-  el.innerHTML = sorted.map(e=>`
-    <div class="history-item">
-      <div class="history-left">
-        <div class="history-supplier">${MESES[e.mes-1]} · ${e.tipo}</div>
-        <div class="history-date">${e.obs||''}</div>
-      </div>
-      <div class="history-right" style="display:flex;align-items:center;gap:12px">
-        <div class="history-total">${fmtR(e.valor)}</div>
-        <button onclick="deletarEstoque(${e.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ══════════════════════════════════════════════════════
-// EMPRÉSTIMOS
-// ══════════════════════════════════════════════════════
+// ── EMPRÉSTIMOS ────────────────────────────────────────────────────────
 function salvarEmprestimo() {
   const data = document.getElementById('emp-data').value;
   const tipo = document.getElementById('emp-tipo').value;
@@ -1394,402 +586,283 @@ function salvarEmprestimo() {
   const valor = parseFloat(document.getElementById('emp-valor').value);
   const obs = document.getElementById('emp-obs').value.trim();
   if (!data || !desc || !valor) { toast('Preencha todos os campos', 'error'); return; }
-
   const emp = { id: Date.now(), data, tipo, loja, desc, valor, obs };
   state.emprestimos.push(emp);
   save();
-  enviarParaSheets('emprestimo', emp);
-  toast(`Empréstimo salvo! ✓`, 'success');
+  enviar('emprestimo', emp);
+  toast('Empréstimo salvo! ✓', 'success');
   document.getElementById('emp-desc').value = '';
   document.getElementById('emp-valor').value = '';
-  renderEmpHistory();
 }
 
-function renderEmpHistory() {
-  const el = document.getElementById('emp-history');
-  const sorted = [...state.emprestimos].sort((a,b)=>b.data.localeCompare(a.data)).slice(0,10);
-  if (sorted.length === 0) { el.innerHTML = emptyState('Nenhum empréstimo lançado ainda'); return; }
-  el.innerHTML = sorted.map(e=>`
-    <div class="history-item">
-      <div class="history-left">
-        <div class="history-supplier">${e.tipo} → ${e.loja}</div>
-        <div class="history-date">${fmtDate(e.data)} · ${e.desc}</div>
-      </div>
-      <div class="history-right" style="display:flex;align-items:center;gap:12px">
-        <div class="history-total" style="color:${e.tipo==='Cedi'?'var(--red)':'var(--green)'}">${e.tipo==='Cedi'?'-':'+'} ${fmtR(e.valor)}</div>
-        <button onclick="deletarEmprestimo(${e.id})" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px" title="Apagar">🗑</button>
-      </div>
-    </div>
-  `).join('');
-}
+// ── HISTÓRICO ──────────────────────────────────────────────────────────
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+               'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
-// ══════════════════════════════════════════════════════
-// DASHBOARD
-// ══════════════════════════════════════════════════════
-let dashMonth = new Date().getMonth() + 1;
-let dashYear = new Date().getFullYear();
+function renderHist() {
+  const el = document.getElementById('hist-content');
+  const all = [
+    ...state.faturamentos.map(f => ({ ...f, tipo: 'fat', ts: f.data })),
+    ...state.notas.map(n => ({ ...n, tipo: 'nf', ts: n.data })),
+    ...state.estoques.map(e => ({ ...e, tipo: 'est', ts: e.ano + '-' + String(e.mes).padStart(2,'0') + '-01' })),
+    ...state.emprestimos.map(e => ({ ...e, tipo: 'emp', ts: e.data })),
+    ...state['desperdícios'].map(d => ({ ...d, tipo: 'desp', ts: d.data }))
+  ].sort((a,b) => b.ts.localeCompare(a.ts));
 
-function changeMonth(delta) {
-  dashMonth += delta;
-  if (dashMonth > 12) { dashMonth = 1; dashYear++; }
-  if (dashMonth < 1) { dashMonth = 12; dashYear--; }
-  renderDashboard();
-}
-
-function renderDashboard() {
-  document.getElementById('dash-month-name').textContent = MESES[dashMonth-1] + ' ' + dashYear;
-
-  const verde = state.config.verde;
-  const amarelo = state.config.amarelo;
-  document.getElementById('meta-verde-label').textContent = verde + '% ✓';
-  document.getElementById('meta-amarelo-label').textContent = amarelo + '% ⚠';
-  document.getElementById('leg-verde').textContent = verde;
-  document.getElementById('leg-amarelo').textContent = amarelo;
-
-  // Faturamento do mês
-  const fat = state.faturamentos
-    .filter(f => { const d = parseData(f.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
-    .reduce((a,f)=>a+f.valor, 0);
-
-  // Compras de consumo do mês
-  const compras = state.notas
-    .filter(n => { const d = parseData(n.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
-    .flatMap(n=>n.itens.filter(i=>i.cat==='Consumo'))
-    .reduce((a,i)=>a+i.valor, 0);
-
-  // Empréstimos
-  const empMes = state.emprestimos.filter(e => { const d = parseData(e.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; });
-  const empCedidos = empMes.filter(e=>e.tipo==='Cedi').reduce((a,e)=>a+e.valor, 0);
-  const empRecebidos = empMes.filter(e=>e.tipo==='Recebi').reduce((a,e)=>a+e.valor, 0);
-
-  // Estoque
-  const estIni = state.estoques.find(e=>e.mes===dashMonth && e.ano===dashYear && e.tipo==='Inicial');
-  const estFin = state.estoques.find(e=>e.mes===dashMonth && e.ano===dashYear && e.tipo==='Final');
-  const estoqueIni = estIni ? estIni.valor : 0;
-  const estoqueFin = estFin ? estFin.valor : 0;
-
-  // CMV = EI + Compras + EmpRecebidos - EmpCedidos - EF
-  const cmvRS = estoqueIni + compras + empRecebidos - empCedidos - estoqueFin;
-  const cmvPct = fat > 0 ? (cmvRS / fat) * 100 : null;
-
-  // Update UI
-  document.getElementById('dash-fat').textContent = fat > 0 ? fmtR(fat) : 'R$ —';
-  document.getElementById('dash-cmv-rs').textContent = cmvRS > 0 ? fmtR(cmvRS) : 'R$ —';
-  document.getElementById('dash-compras').textContent = compras > 0 ? fmtR(compras) : 'R$ —';
-  document.getElementById('dash-estoque').textContent = fmtR(estoqueIni - estoqueFin);
-
-  const pctEl = document.getElementById('dash-cmv-pct');
-  const statusEl = document.getElementById('dash-cmv-status');
-  const barEl = document.getElementById('dash-bar');
-
-  if (cmvPct === null || fat === 0) {
-    pctEl.textContent = '—';
-    pctEl.className = 'cmv-pct';
-    statusEl.textContent = 'Aguardando dados';
-    statusEl.className = 'cmv-status';
-    barEl.style.width = '0%';
-  } else {
-    pctEl.textContent = cmvPct.toFixed(1) + '%';
-    const barW = Math.min((cmvPct / 40) * 100, 100);
-    barEl.style.width = barW + '%';
-    if (cmvPct < verde) {
-      pctEl.className = 'cmv-pct green'; statusEl.className = 'cmv-status green';
-      statusEl.textContent = '✓ Dentro da meta'; barEl.style.background = 'var(--green)';
-    } else if (cmvPct < amarelo) {
-      pctEl.className = 'cmv-pct yellow'; statusEl.className = 'cmv-status yellow';
-      statusEl.textContent = '⚠ Atenção'; barEl.style.background = 'var(--yellow)';
-    } else {
-      pctEl.className = 'cmv-pct red'; statusEl.className = 'cmv-status red';
-      statusEl.textContent = '🔴 Ação imediata'; barEl.style.background = 'var(--red)';
-    }
-  }
-
-  // Subcategories
-  const subcatMap = {};
-  state.notas
-    .filter(n => { const d = parseData(n.data); return d.getMonth()+1===dashMonth && d.getFullYear()===dashYear; })
-    .flatMap(n=>n.itens.filter(i=>i.cat==='Consumo' && i.subcat))
-    .forEach(i => { subcatMap[i.subcat] = (subcatMap[i.subcat]||0) + i.valor; });
-
-  const maxCat = Math.max(...Object.values(subcatMap), 1);
-  const catsEl = document.getElementById('dash-cats');
-  if (Object.keys(subcatMap).length === 0) {
-    catsEl.innerHTML = `<p style="font-size:12px;color:var(--muted);text-align:center;padding:12px">Nenhuma compra lançada neste mês</p>`;
-  } else {
-    catsEl.innerHTML = Object.entries(subcatMap)
-      .sort((a,b)=>b[1]-a[1])
-      .map(([cat, val])=>`
-        <div class="cat-row">
-          <span class="cat-name">${cat}</span>
-          <div class="cat-bar-bg"><div class="cat-bar-fill" style="width:${(val/maxCat*100).toFixed(0)}%"></div></div>
-          <span class="cat-val">${fmtR(val)}</span>
-        </div>
-      `).join('');
-  }
-
-  // Monthly chart
-  renderChart();
-}
-
-function renderChart() {
-  const verde = state.config.verde;
-  const amarelo = state.config.amarelo;
-  const bars = document.getElementById('chart-bars');
-
-  // build 12 months for current year
-  const months = MESES.map((name, i) => {
-    const m = i + 1;
-    const fat = state.faturamentos
-      .filter(f => { const d = parseData(f.data); return d.getMonth()+1===m && d.getFullYear()===dashYear; })
-      .reduce((a,f)=>a+f.valor, 0);
-    const compras = state.notas
-      .filter(n => { const d = parseData(n.data); return d.getMonth()+1===m && d.getFullYear()===dashYear; })
-      .flatMap(n=>n.itens.filter(i=>i.cat==='Consumo'))
-      .reduce((a,i)=>a+i.valor, 0);
-    const estIni = state.estoques.find(e=>e.mes===m&&e.ano===dashYear&&e.tipo==='Inicial');
-    const estFin = state.estoques.find(e=>e.mes===m&&e.ano===dashYear&&e.tipo==='Final');
-    const empCed = state.emprestimos.filter(e=>{ const d=parseData(e.data); return d.getMonth()+1===m&&d.getFullYear()===dashYear&&e.tipo==='Cedi';}).reduce((a,e)=>a+e.valor,0);
-    const empRec = state.emprestimos.filter(e=>{ const d=parseData(e.data); return d.getMonth()+1===m&&d.getFullYear()===dashYear&&e.tipo==='Recebi';}).reduce((a,e)=>a+e.valor,0);
-    const cmvRS = (estIni?estIni.valor:0) + compras + empRec - empCed - (estFin?estFin.valor:0);
-    const pct = fat > 0 ? cmvRS / fat * 100 : 0;
-    return { name: name.slice(0,3), pct, active: m === dashMonth };
-  });
-
-  const maxPct = Math.max(...months.map(m=>m.pct), amarelo+5, 5);
-
-  bars.innerHTML = months.map(m => {
-    const h = m.pct > 0 ? Math.max((m.pct / maxPct) * 70, 4) : 0;
-    const color = m.pct === 0 ? '#e0dbd0' : m.pct < verde ? '#1b6b3a' : m.pct < amarelo ? '#c9a43a' : '#c0392b';
-    return `
-      <div class="chart-col" style="${m.active?'opacity:1':'opacity:0.5'}">
-        <div class="chart-bar" style="height:${h}px;background:${color}"></div>
-        <div class="chart-month-label" style="${m.active?'color:var(--green-dark);font-weight:700':''}">${m.name}</div>
-      </div>
-    `;
-  }).join('');
-}
-
-// ══════════════════════════════════════════════════════
-// CONFIG
-// ══════════════════════════════════════════════════════
-function loadConfig() {
-  const c = state.config;
-  document.getElementById('cfg-loja-a').value = c.lojaA || 'Loja A';
-  document.getElementById('cfg-loja-b').value = c.lojaB || 'Loja B';
-  document.getElementById('cfg-loja-c').value = c.lojaC || 'Loja C';
-  document.getElementById('cfg-verde').value = c.verde || 30;
-  document.getElementById('cfg-amarelo').value = c.amarelo || 33;
-  document.getElementById('cfg-script-url').value = c.scriptUrl || '';
-  document.getElementById('cfg-gcom-empresa').value = c.gcomEmpresa || '';
-  document.getElementById('cfg-gcom-user').value = c.gcomUser || '';
-  document.getElementById('cfg-gcom-pass').value = c.gcomPass || '';
-}
-
-function salvarConfig() {
-  state.config = {
-    lojaA: document.getElementById('cfg-loja-a').value,
-    lojaB: document.getElementById('cfg-loja-b').value,
-    lojaC: document.getElementById('cfg-loja-c').value,
-    verde: parseFloat(document.getElementById('cfg-verde').value) || 30,
-    amarelo: parseFloat(document.getElementById('cfg-amarelo').value) || 33,
-    scriptUrl: document.getElementById('cfg-script-url').value.trim(),
-    gcomEmpresa: document.getElementById('cfg-gcom-empresa').value.trim(),
-    gcomUser: document.getElementById('cfg-gcom-user').value,
-    gcomPass: document.getElementById('cfg-gcom-pass').value,
-  };
-  save();
-  // Update Loja selects
-  const lojaSelect = document.getElementById('emp-loja');
-  lojaSelect.options[0].text = state.config.lojaB;
-  lojaSelect.options[0].value = state.config.lojaB;
-  lojaSelect.options[1].text = state.config.lojaC;
-  lojaSelect.options[1].value = state.config.lojaC;
-  toast('Configurações salvas! ✓', 'success');
-}
-
-function showGcomModal() {
-  document.getElementById('gcom-fat-data').value = today();
-  document.getElementById('gcom-fat-valor').value = '';
-  // Small delay to let the GCOM tab open first
-  setTimeout(() => {
-    document.getElementById('modal-gcom').classList.add('open');
-  }, 800);
-}
-
-function confirmarFatGCOM() {
-  const valor = parseFloat(document.getElementById('gcom-fat-valor').value);
-  const data = document.getElementById('gcom-fat-data').value;
-  const obs = document.getElementById('gcom-fat-obs').value.trim();
-  if (!valor || !data) { toast('Preencha o valor e a data', 'error'); return; }
-  closeModal('modal-gcom');
-  navTo('fat', document.querySelectorAll('.bnav-btn')[2]);
-  document.getElementById('fat-data').value = data;
-  document.getElementById('fat-valor').value = valor;
-  document.getElementById('fat-obs').value = obs || 'Importado do GCOM';
-  toast('Valor preenchido! Confirme e salve ✓', 'success');
-}
-
-
-
-// ══════════════════════════════════════════════════════
-// DELETAR
-// ══════════════════════════════════════════════════════
-function deletarFaturamento(id) {
-  if (!confirm('Apagar este faturamento?')) return;
-  state.faturamentos = state.faturamentos.filter(f => f.id !== id);
-  save(); renderFatHistory();
-  toast('Faturamento apagado', 'success');
-}
-function deletarEstoque(id) {
-  if (!confirm('Apagar este estoque?')) return;
-  state.estoques = state.estoques.filter(e => e.id !== id);
-  save(); renderEstHistory();
-  toast('Estoque apagado', 'success');
-}
-function deletarEmprestimo(id) {
-  if (!confirm('Apagar este empréstimo?')) return;
-  state.emprestimos = state.emprestimos.filter(e => e.id !== id);
-  save(); renderEmpHistory();
-  toast('Empréstimo apagado', 'success');
-}
-function deletarNota(id) {
-  if (!confirm('Apagar esta nota fiscal e todos os seus itens?')) return;
-  state.notas = state.notas.filter(n => n.id !== id);
-  save(); renderNotasHistory();
-  toast('Nota fiscal apagada', 'success');
-}
-
-// ══════════════════════════════════════════════════════
-// SINCRONIZAÇÃO COM PLANILHA
-// ══════════════════════════════════════════════════════
-async function sincronizarPlanilha() {
-  const url = state.config.scriptUrl;
-  if (!url) {
-    toast('Configure a URL do Apps Script em Config ⚙️', 'error');
+  if (!all.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">Nenhum lançamento ainda.<br>Use as abas abaixo para começar!</div></div>`;
     return;
   }
 
-  // Update UI
-  document.getElementById('sync-icon').textContent = '⏳';
-  document.getElementById('sync-label').textContent = 'Sincronizando...';
-  document.getElementById('sync-btn').disabled = true;
-
-  try {
-    const resp = await fetch(url + '?acao=ler', { method: 'GET' });
-    const json = await resp.json();
-
-    if (!json.ok || !json.dados) {
-      throw new Error(json.error || 'Erro ao ler dados');
+  el.innerHTML = all.map(item => {
+    if (item.tipo === 'fat') {
+      return `<div class="hist-item">
+        <div class="hist-left">
+          <div class="hist-title">💰 Faturamento</div>
+          <div class="hist-sub">${fmtDate(item.data)}${item.obs?' · '+item.obs:''}</div>
+        </div>
+        <div class="hist-right">
+          <div class="hist-val">${fmtR(item.valor)}</div>
+          <button class="hist-del" onclick="deletar('fat',${item.id})">🗑</button>
+        </div>
+      </div>`;
     }
-
-    const d = json.dados;
-
-    // A planilha é sempre a fonte da verdade — substitui tudo
-    state.faturamentos = d.faturamentos || [];
-    state.notas = d.notas || [];
-    state.estoques = d.estoques || [];
-    state.emprestimos = d.emprestimos || [];
-
-    save();
-    renderDashboard();
-    renderNotasHistory();
-    renderFatHistory();
-    renderEstHistory();
-    renderEmpHistory();
-
-    document.getElementById('sync-icon').textContent = '✅';
-    document.getElementById('sync-label').textContent = 'Sincronizado!';
-    toast('Dados atualizados da planilha ✓', 'success');
-
-  } catch(err) {
-    document.getElementById('sync-icon').textContent = '❌';
-    document.getElementById('sync-label').textContent = 'Erro — tente novamente';
-    toast('Erro ao sincronizar: ' + err.message, 'error');
-  }
-
-  setTimeout(() => {
-    document.getElementById('sync-icon').textContent = '🔄';
-    document.getElementById('sync-label').textContent = 'Sincronizar com Planilha';
-    document.getElementById('sync-btn').disabled = false;
-  }, 3000);
+    if (item.tipo === 'nf') {
+      const total = item.itens.reduce((a,i)=>a+i.valor,0);
+      const cmv = item.itens.filter(i=>i.cat==='Consumo').reduce((a,i)=>a+i.valor,0);
+      return `<div class="hist-item">
+        <div class="hist-left">
+          <div class="hist-title">📋 ${item.fornecedor}</div>
+          <div class="hist-sub">${fmtDate(item.data)} · ${item.itens.length} iten(s)${item.numero?' · NF '+item.numero:''}</div>
+          ${cmv>0?`<span class="hist-badge">CMV ${fmtR(cmv)}</span>`:''}
+        </div>
+        <div class="hist-right">
+          <div class="hist-val">${fmtR(total)}</div>
+          <button class="hist-del" onclick="deletar('nf',${item.id})">🗑</button>
+        </div>
+      </div>`;
+    }
+    if (item.tipo === 'est') {
+      return `<div class="hist-item">
+        <div class="hist-left">
+          <div class="hist-title">📦 Estoque — ${MESES[item.mes-1]}</div>
+          <div class="hist-sub">${item.ano}${item.obs?' · '+item.obs:''}</div>
+        </div>
+        <div class="hist-right">
+          <div class="hist-val">${fmtR(item.valor)}</div>
+          <button class="hist-del" onclick="deletar('est',${item.id})">🗑</button>
+        </div>
+      </div>`;
+    }
+    if (item.tipo === 'emp') {
+      return `<div class="hist-item">
+        <div class="hist-left">
+          <div class="hist-title">🔄 ${item.tipo_emp||item.tipo} → ${item.loja}</div>
+          <div class="hist-sub">${fmtDate(item.data)} · ${item.desc}</div>
+        </div>
+        <div class="hist-right">
+          <div class="hist-val" style="color:${item.tipo==='Cedi'?'var(--red)':'var(--green)'}">${item.tipo==='Cedi'?'-':'+'} ${fmtR(item.valor)}</div>
+          <button class="hist-del" onclick="deletar('emp',${item.id})">🗑</button>
+        </div>
+      </div>`;
+    }
+    if (item.tipo === 'desp') {
+      return `<div class="hist-item">
+        <div class="hist-left">
+          <div class="hist-title">🗑️ ${item.produto}</div>
+          <div class="hist-sub">${fmtDate(item.data)} · ${item.qtd} ${item.unidade} · ${item.motivo}</div>
+          <span class="hist-badge" style="background:rgba(192,57,43,0.1);color:var(--red)">${fmtR(item.perda)}</span>
+        </div>
+        <div class="hist-right">
+          <button class="hist-del" onclick="deletar('desp',${item.id})">🗑</button>
+        </div>
+      </div>`;
+    }
+  }).join('');
 }
 
-// ══════════════════════════════════════════════════════
-async function enviarParaSheets(tipo, dados) {
+function deletar(tipo, id) {
+  if (!confirm('Apagar este lançamento?')) return;
+  if (tipo === 'fat') state.faturamentos = state.faturamentos.filter(f=>f.id!==id);
+  if (tipo === 'nf') state.notas = state.notas.filter(n=>n.id!==id);
+  if (tipo === 'est') state.estoques = state.estoques.filter(e=>e.id!==id);
+  if (tipo === 'emp') state.emprestimos = state.emprestimos.filter(e=>e.id!==id);
+  if (tipo === 'desp') state['desperdícios'] = state['desperdícios'].filter(d=>d.id!==id);
+  save();
+  renderHist();
+  toast('Lançamento apagado', 'success');
+}
+
+
+// ── PRODUTOS (tabela de preços para desperdícios) ──────────────────────
+const PRODUTOS_DB = [{"nome": "ÁGUA CRYSTAL COM GÁS 500 ML", "unidade": "UNIDADE", "custo": 1.63, "categoria": "CMV - BEBIDAS"}, {"nome": "ÁGUA CRYSTAL SEM GÁS 500 ML", "unidade": "UNIDADE", "custo": 1.49, "categoria": "CMV - BEBIDAS"}, {"nome": "CERVEJA HEINEKEN LONG NECK", "unidade": "UNIDADE", "custo": 4.25, "categoria": "CMV - BEBIDAS"}, {"nome": "CERVEJA HEINEKEN LONG NECK 0", "unidade": "UNIDADE", "custo": 3.4475, "categoria": "CMV - BEBIDAS"}, {"nome": "CERVEJA HEINEKEN LATA", "unidade": "UNIDADE", "custo": 3.67, "categoria": "CMV - BEBIDAS"}, {"nome": "CHA MATTE LEÃO SOLÚVEL 500G", "unidade": "UNIDADE", "custo": 12.0325, "categoria": "CMV - BEBIDAS"}, {"nome": "COCA-COLA 350ML", "unidade": "UNIDADE", "custo": 2.95, "categoria": "CMV - BEBIDAS"}, {"nome": "COCA-COLA 600ML", "unidade": "UNIDADE", "custo": 3.36, "categoria": "CMV - BEBIDAS"}, {"nome": "COCA-COLA ZERO 350ML", "unidade": "UNIDADE", "custo": 2.95, "categoria": "CMV - BEBIDAS"}, {"nome": "COCA-COLA ZERO 600ML", "unidade": "UNIDADE", "custo": 3.36, "categoria": "CMV - BEBIDAS"}, {"nome": "FANTA GUARANÁ 350ML", "unidade": "UNIDADE", "custo": 2.94, "categoria": "CMV - BEBIDAS"}, {"nome": "FANTA GUARANÁ ZERO 350ML", "unidade": "UNIDADE", "custo": 2.87, "categoria": "CMV - BEBIDAS"}, {"nome": "FANTA LARANJA 350ML", "unidade": "UNIDADE", "custo": 2.94, "categoria": "CMV - BEBIDAS"}, {"nome": "FANTA UVA 350ML", "unidade": "UNIDADE", "custo": 2.94, "categoria": "CMV - BEBIDAS"}, {"nome": "ICE TEA LIMÃO 300ML", "unidade": "UNIDADE", "custo": 3.2208, "categoria": "CMV - BEBIDAS"}, {"nome": "ICE TEA LIMÃO ZERO 300ML", "unidade": "UNIDADE", "custo": 3.22, "categoria": "CMV - BEBIDAS"}, {"nome": "ICE TEA PÊSSEGO 300ML", "unidade": "UNIDADE", "custo": 3.22, "categoria": "CMV - BEBIDAS"}, {"nome": "ICE TEA PÊSSEGO ZERO 300ML", "unidade": "UNIDADE", "custo": 3.22, "categoria": "CMV - BEBIDAS"}, {"nome": "MATTE LEÃO LIMÃO 300ML", "unidade": "UNIDADE", "custo": 1.86, "categoria": "CMV - BEBIDAS"}, {"nome": "MATTE LEÃO LIMÃO COM GÁS 290ML", "unidade": "UNIDADE", "custo": 3.11, "categoria": "CMV - BEBIDAS"}, {"nome": "MATTE LEÃO NATURAL 300ML", "unidade": "UNIDADE", "custo": 1.86, "categoria": "CMV - BEBIDAS"}, {"nome": "MATTE LEÃO NATURAL ZERO 300ML", "unidade": "UNIDADE", "custo": 1.86, "categoria": "CMV - BEBIDAS"}, {"nome": "SCHWEPPES CITRUS 350ML", "unidade": "UNIDADE", "custo": 3.58, "categoria": "CMV - BEBIDAS"}, {"nome": "SCHWEPPES TONICA 350ML", "unidade": "UNIDADE", "custo": 3.58, "categoria": "CMV - BEBIDAS"}, {"nome": "SPRITE ORIGINAL 350ML", "unidade": "UNIDADE", "custo": 2.94, "categoria": "CMV - BEBIDAS"}, {"nome": "SPRITE S/AÇÚCAR 350ML", "unidade": "UNIDADE", "custo": 2.87, "categoria": "CMV - BEBIDAS"}, {"nome": "SUCO DE LIMÃO CONGELADO", "unidade": "LITRO", "custo": 13.5678, "categoria": "CMV - BEBIDAS"}, {"nome": "SUCO DEL VALLE MANGA 290ML", "unidade": "UNIDADE", "custo": 3.39, "categoria": "CMV - BEBIDAS"}, {"nome": "SUCO DEL VALLE  MARACUJÁ 290ML", "unidade": "UNIDADE", "custo": 3.39, "categoria": "CMV - BEBIDAS"}, {"nome": "SUCO DEL VALLE PESSEGO 290ML", "unidade": "UNIDADE", "custo": 3.39, "categoria": "CMV - BEBIDAS"}, {"nome": "SUCO DEL VALLE UVA 290ML", "unidade": "UNIDADE", "custo": 3.39, "categoria": "CMV - BEBIDAS"}, {"nome": "TERMOMETRO TIPO ESPETO C/ CERTIFICADO", "unidade": "UNIDADE", "custo": 137.97, "categoria": "UTENSILIOS"}, {"nome": "MANGA DESC CONFEITO C/ 50 UNID", "unidade": "UNIDADE", "custo": 0.573, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "CORTADOR LISO 10 CM", "unidade": "UNIDADE", "custo": 37.99, "categoria": "UTENSILIOS"}, {"nome": "LACRE P/ CHOCOLATE PCT 100 UNI", "unidade": "UNIDADE", "custo": 0.1602, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PEGADOR ACO INOX (ASPARGOS)", "unidade": "UNIDADE", "custo": 20.93, "categoria": "UTENSILIOS"}, {"nome": "TABUA POLIETILENO 40X1CM", "unidade": "UNIDADE", "custo": 88.06, "categoria": "UTENSILIOS"}, {"nome": "ABRIDOR DE LATA INOX", "unidade": "UNIDADE", "custo": 6.09, "categoria": "UTENSILIOS"}, {"nome": "ACETO BALSAMICO GF 500ML (IMPORTADO)", "unidade": "UNIDADE", "custo": 19.32, "categoria": "CMV - DEMAIS ALIMENTOS"}, {"nome": "AZEITE EV OLIVA VD 12X500ML (IMPORTADO)", "unidade": "UNIDADE", "custo": 36.6233, "categoria": "CMV - DEMAIS ALIMENTOS"}, {"nome": "BARRA MAGNETICA 33CM - M13MKS", "unidade": "UNIDADE", "custo": 43.7, "categoria": "UTENSILIOS"}, {"nome": "PULVERIZADOR C/ BOMBA 500ML", "unidade": "UNIDADE", "custo": 9.51, "categoria": "UTENSILIOS"}, {"nome": "CACAROLA FUNDA 40CM 25 L", "unidade": "UNIDADE", "custo": 1405.64, "categoria": "UTENSILIOS"}, {"nome": "SAPATO ATEND PRETO N40", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "CLORO LIQUIDO USO GERAL 5LT", "unidade": "LITRO", "custo": 1.552, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "RASPADOR MASTER INOX 24672/185", "unidade": "UNIDADE", "custo": 46.37, "categoria": "UTENSILIOS"}, {"nome": "ETIQUETA VALIDADE SPO 2500UN", "unidade": "UNIDADE", "custo": 0.0192, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "ROLO PACK FILME PVC 300MX29CM", "unidade": "UNIDADE", "custo": 42.43, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "LUVA LATEX PAR AMARELA SOFT (IMPORTADO)", "unidade": "UNIDADE", "custo": 4.16, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "MOEDOR DE PIMENTA REF104", "unidade": "UNIDADE", "custo": 154.91, "categoria": "UTENSILIOS"}, {"nome": "ORGANIZADOR TOMATE REF920 VISTA", "unidade": "UNIDADE", "custo": 42.26, "categoria": "UTENSILIOS"}, {"nome": "PA P/ LIXO CABO LONGO", "unidade": "UNIDADE", "custo": 7.82, "categoria": "UTENSILIOS"}, {"nome": "PALITO SH 2000UN (IMPORTADO)", "unidade": "UNIDADE", "custo": 0.0115, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PANO MULTIUSO RL 28 CM X 300 M", "unidade": "UNIDADE", "custo": 129.63, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PAPEL PARA LASANHA 500UNI", "unidade": "UNIDADE", "custo": 0.0633, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "GARFO P/ MASSA TRINCH 50,0 CM", "unidade": "UNIDADE", "custo": 52.78, "categoria": "UTENSILIOS"}, {"nome": "PEDRA AFIAR GRAO 120/240", "unidade": "UNIDADE", "custo": 50.33, "categoria": "UTENSILIOS"}, {"nome": "PEDRA REFRATARIA BEGE FORNO 35X32", "unidade": "UNIDADE", "custo": 130.59, "categoria": "UTENSILIOS"}, {"nome": "PEITO/BLANKET PERU 4X1,7KG", "unidade": "KILO", "custo": 27.5279, "categoria": "CMV - PROTEINAS"}, {"nome": "PIMENTA PRETA GRAO - 500 GR (IMPORTADA)", "unidade": "UNIDADE", "custo": 26.17, "categoria": "CMV - TEMPEROS"}, {"nome": "PRESUNTO COZ S/ CP GD 2X3,67KG", "unidade": "KILO", "custo": 19.2153, "categoria": "CMV - PROTEINAS"}, {"nome": "RALADOR INOX 4 FACES 2202/327", "unidade": "UNIDADE", "custo": 46.74, "categoria": "UTENSILIOS"}, {"nome": "RECIPIENTE PLAST BOTELLA 762/40", "unidade": "UNIDADE", "custo": 6.99, "categoria": "UTENSILIOS"}, {"nome": "REFRESCO LARANJA 1KG", "unidade": "LITRO", "custo": 9.51, "categoria": "CMV - BEBIDAS"}, {"nome": "RODO BORRACHA DUPLA 40CM", "unidade": "UNIDADE", "custo": 13.57, "categoria": "UTENSILIOS"}, {"nome": "SACO LIXO PRETO 100X200 LT", "unidade": "UNIDADE", "custo": 0.3487, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SACO LIXO PRETO 100X40LT", "unidade": "UNIDADE", "custo": 0.193, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SACO LIXO PRETO 100X60LT", "unidade": "UNIDADE", "custo": 0.1435, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SAL SH 2000 X 1G", "unidade": "UNIDADE", "custo": 0.0093, "categoria": "CMV - TEMPEROS"}, {"nome": "SACO LIXO PRETO 100X250LT", "unidade": "UNIDADE", "custo": 0.714, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "TOUCA BRANCA DESC CX 100UNID", "unidade": "UNIDADE", "custo": 0.1727, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "VASSOURA NYLON NOVICA", "unidade": "UNIDADE", "custo": 7.64, "categoria": "UTENSILIOS"}, {"nome": "VASSOURA PARA BANCADA", "unidade": "UNIDADE", "custo": 5.86, "categoria": "UTENSILIOS"}, {"nome": "SAPATO ATEND PRETO N39", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "BANDEJA ALIMENTO REF342", "unidade": "UNIDADE", "custo": 16.75, "categoria": "UTENSILIOS"}, {"nome": "EMB PLAST P/ MASSA 250UN R041", "unidade": "UNIDADE", "custo": 1.143, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "TAMPA PLAST MASSA BCA250UN REF", "unidade": "UNIDADE", "custo": 0.8566, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SAPATO ATEND PRETO N35", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "SAPATO ATEND PRETO N36", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "AZEITE BAGACO OLIVA 5LT (IMPORTADO)", "unidade": "LITRO", "custo": 33.97, "categoria": "CMV - DEMAIS ALIMENTOS"}, {"nome": "LINGUICA CALABRESA 2,5KG", "unidade": "KILO", "custo": 18.152, "categoria": "CMV - PROTEINAS"}, {"nome": "TABELA HIGIENIZACAO DAS MAOS", "unidade": "UNIDADE", "custo": 6.3, "categoria": "UTENSILIOS"}, {"nome": "COLHER PEQ TRAMONT - 63917/110", "unidade": "UNIDADE", "custo": 10.25, "categoria": "UTENSILIOS"}, {"nome": "ESCORREDOR MASSA 1/4 40CM", "unidade": "UNIDADE", "custo": 690.75, "categoria": "UTENSILIOS"}, {"nome": "FRIGIDEIRA INOX REF 62636/261", "unidade": "UNIDADE", "custo": 149.68, "categoria": "UTENSILIOS"}, {"nome": "CUBA INOX (FUNDA) 53X33 61051/060", "unidade": "UNIDADE", "custo": 96.08, "categoria": "UTENSILIOS"}, {"nome": "LIXEIRA PLAST C/ PEDAL 72L REF299", "unidade": "UNIDADE", "custo": 106.99, "categoria": "UTENSILIOS"}, {"nome": "RECIP PLAST VAC FREEZER 460/2", "unidade": "UNIDADE", "custo": 21.37, "categoria": "UTENSILIOS"}, {"nome": "ORGANIZADOR TOP STOCK REF 970", "unidade": "UNIDADE", "custo": 57.54, "categoria": "UTENSILIOS"}, {"nome": "RODO DE ALUMINIO IMPORTADO", "unidade": "UNIDADE", "custo": 77.18, "categoria": "UTENSILIOS"}, {"nome": "SACO LIXO PRETO 100X100LT", "unidade": "UNIDADE", "custo": 0.2853, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PEGADOR GELO INGR 63800/610/11", "unidade": "UNIDADE", "custo": 9.15, "categoria": "UTENSILIOS"}, {"nome": "CANUDO MOLHO (B.CHAMPAG 61218)", "unidade": "UNIDADE", "custo": 142.62, "categoria": "UTENSILIOS"}, {"nome": "SAPATO ATEND PRETO N37", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "ESPONJA FIBRACO 3M-5UN", "unidade": "UNIDADE", "custo": 1.686, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "REFRESCO UVA 1KG", "unidade": "LITRO", "custo": 9.51, "categoria": "CMV - BEBIDAS"}, {"nome": "SAPATO ATEND PRETO N38", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "CANUDO PEQ (B.GELO-61219/140)", "unidade": "UNIDADE", "custo": 100.04, "categoria": "UTENSILIOS"}, {"nome": "QUEIJO GORGONZOLA (APROX 6 KG)", "unidade": "KILO", "custo": 47.53, "categoria": "CMV - LATICINIOS"}, {"nome": "SAL REFINADO 1KG", "unidade": "KILO", "custo": 1.35, "categoria": "CMV - TEMPEROS"}, {"nome": "FACA INOX 26CM REF 24609/080", "unidade": "UNIDADE", "custo": 112.98, "categoria": "UTENSILIOS"}, {"nome": "PA PARA GELO INOX 2202/362", "unidade": "UNIDADE", "custo": 53.51, "categoria": "UTENSILIOS"}, {"nome": "ACENDEDOR DE GAS", "unidade": "UNIDADE", "custo": 22.7, "categoria": "UTENSILIOS"}, {"nome": "JARRA GRADUADA 1LT REF 202 (IMPORTADO)", "unidade": "UNIDADE", "custo": 21.8, "categoria": "UTENSILIOS"}, {"nome": "LIXEIRA PLAST C/ PEDAL 36 L REF298/01", "unidade": "UNIDADE", "custo": 79.09, "categoria": "UTENSILIOS"}, {"nome": "ORGANIZADOR P/ PANE REF 955", "unidade": "UNIDADE", "custo": 27.0, "categoria": "UTENSILIOS"}, {"nome": "REDE PARA CABELO UN", "unidade": "UNIDADE", "custo": 2.33, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "GN 1/6 TRANSP 64CW135 - 10CM/1,5L (IMPORTADO)", "unidade": "UNIDADE", "custo": 30.15, "categoria": "UTENSILIOS"}, {"nome": "GN 1/9 TRANSP 94CW135 - 10 CM/0,85L (IMPORTADO)", "unidade": "UNIDADE", "custo": 22.56, "categoria": "UTENSILIOS"}, {"nome": "TAMPA GN 1/9 BRANCA 90PPCWSC438 (IMPORTADO)", "unidade": "UNIDADE", "custo": 16.0, "categoria": "UTENSILIOS"}, {"nome": "BACON ASSADO CUBOS CX 2 KG", "unidade": "KILO", "custo": 62.04, "categoria": "CMV - PROTEINAS"}, {"nome": "CORTADOR DE BAG VERMELHO", "unidade": "UNIDADE", "custo": 26.32, "categoria": "UTENSILIOS"}, {"nome": "ESCORREDOR DE MASSA RETAGUARDA", "unidade": "UNIDADE", "custo": 550.23, "categoria": "UTENSILIOS"}, {"nome": "BOBINA BALANCA FILIZOLA RL 697 UND", "unidade": "UNIDADE", "custo": 7.74, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "FRASCO FLIP TOP UN", "unidade": "UNIDADE", "custo": 24.92, "categoria": "UTENSILIOS"}, {"nome": "SOFT CARE PHYNO ROSAS BRANCAS", "unidade": "UNIDADE", "custo": 34.87, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "SUMA LUBE 2 L", "unidade": "LITRO", "custo": 31.37, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "SUMA BLOCK WHITENER 5 L", "unidade": "LITRO", "custo": 8.654, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "SUMA RINSE 5 L", "unidade": "LITRO", "custo": 20.942, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "SUMA MACH L2 5 L", "unidade": "LITRO", "custo": 11.642, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "SUMA GRILL D9 5 L", "unidade": "LITRO", "custo": 12.382, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "VIREX FLV 5 L", "unidade": "LITRO", "custo": 5.89, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "SUMA CHLOR 5KG", "unidade": "LITRO", "custo": 21.548, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "SAPATO ATEND PRETO N41", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "SAPATO ATEND PRETO N42", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "SAPATO ATEND PRETO N43", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "SAPATO ATEND PRETO N34", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "BOBINA BALANCA TOLEDO RL 697 UND", "unidade": "UNIDADE", "custo": 5.6, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SAL GROSSO 1KG", "unidade": "KILO", "custo": 2.0, "categoria": "CMV - TEMPEROS"}, {"nome": "BOBINA PICOTADA 30X40 500 UND", "unidade": "UNIDADE", "custo": 0.0934, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "VINHO BCO CHARDONAY 24X187,5ML (IMPORTADO)", "unidade": "UNIDADE", "custo": 10.3754, "categoria": "CMV - BEBIDAS"}, {"nome": "VINHO TTO MERLOT 24X187,5ML (IMPORTADO)", "unidade": "UNIDADE", "custo": 10.3308, "categoria": "CMV - BEBIDAS"}, {"nome": "PUMP BOMBONA 5L BR800029042", "unidade": "LITRO", "custo": 8.848, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "LUVA LATEX PAR VERDE SOFT LIMP", "unidade": "UNIDADE", "custo": 7.01, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "TERMOMETRO INFRAV CALIBRADO UN", "unidade": "UNIDADE", "custo": 402.08, "categoria": "UTENSILIOS"}, {"nome": "AVENTAL DESCARTAVEL 100UN", "unidade": "UNIDADE", "custo": 0.3237, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "REFIL RODO IMPORTADO", "unidade": "UNIDADE", "custo": 29.3, "categoria": "UTENSILIOS"}, {"nome": "FITA MEDICAO CLORO CX 6UNID BR800001000 (IMPORTADO)", "unidade": "UNIDADE", "custo": 33.895, "categoria": "UTENSILIOS"}, {"nome": "SACO TRANSP MASSA 20X25 1000UND", "unidade": "UNIDADE", "custo": 0.0836, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PAPEL TOALHA 20,3X20 1000UN", "unidade": "UNIDADE", "custo": 0.0158, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "COLHER SOB INDIV PRETO CX 1000", "unidade": "UNIDADE", "custo": 0.1415, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "KIT GARFO FACA PRETO 150 UND", "unidade": "UNIDADE", "custo": 0.4026, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "KIT GARFO COLHER PRETO 150UN GNC", "unidade": "UNIDADE", "custo": 0.3865, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "REFRESCO MARACUJA 1KG", "unidade": "LITRO", "custo": 9.5, "categoria": "CMV - BEBIDAS"}, {"nome": "CESTA TEFLON 215X280 MM", "unidade": "UNIDADE", "custo": 133.49, "categoria": "UTENSILIOS"}, {"nome": "LUVA PROCEDIMENTO MOLHOS CA:16460", "unidade": "UNIDADE", "custo": 107.89, "categoria": "UTENSILIOS"}, {"nome": "BOWL INOX PARA SALADA 26CM", "unidade": "UNIDADE", "custo": 38.06, "categoria": "UTENSILIOS"}, {"nome": "SAPATO ATEND PRETO N44", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "SAPATO ATEND PRETO N45", "unidade": "UNIDADE", "custo": 71.24, "categoria": "UNIFORMES"}, {"nome": "TAMPA GN 1/6 BRANCA 60PPCWSC438 (IMPORTADO)", "unidade": "UNIDADE", "custo": 15.0, "categoria": "UTENSILIOS"}, {"nome": "POTE MOLHO VIAGEM 70 ML G675 CX 500", "unidade": "UNIDADE", "custo": 0.2835, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "TAMPA CN 1/2 TRANSP FLIP TOP 20CWL135 (IMPORTADO)", "unidade": "UNIDADE", "custo": 90.26, "categoria": "UTENSILIOS"}, {"nome": "DRENO 1/2 TRANSP 20CWD135 (IMPORTADO)", "unidade": "UNIDADE", "custo": 29.34, "categoria": "UTENSILIOS"}, {"nome": "ORGANIZADOR PARA CARNES GRANDE REF 24CW135", "unidade": "UNIDADE", "custo": 68.71, "categoria": "UTENSILIOS"}, {"nome": "POLVILHADOR AMAR REF 96SKRC135 UNID", "unidade": "UNIDADE", "custo": 75.67, "categoria": "UTENSILIOS"}, {"nome": "DRENO 1/3 TRANSP 30CWD135 (IMPORTADO)", "unidade": "UNIDADE", "custo": 17.57, "categoria": "UTENSILIOS"}, {"nome": "GN 1/3 TRANSP 34CW135 - 10CM / 3,6L (IMPORTADO)", "unidade": "UNIDADE", "custo": 52.57, "categoria": "UTENSILIOS"}, {"nome": "MAC PENNETTE RIGATE 4X3KG (IMPORTADO)", "unidade": "KILO", "custo": 12.6983, "categoria": "CMV - MASSAS SECAS"}, {"nome": "GNOCCHI 24X0,225G / 5,4KG", "unidade": "UNIDADE", "custo": 4.2892, "categoria": "CMV - MASSAS SECAS"}, {"nome": "LASAGNA BOLOGNESA MAIOR CONG 4X6X340G", "unidade": "UNIDADE", "custo": 8.2025, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "LASAGNA QUEIJO C/ PRESUNTO MAIOR CONG 4X6X340G", "unidade": "UNIDADE", "custo": 8.9337, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "PORTA QUEIJO RALADO (GERGELIM) 1604/000", "unidade": "UNIDADE", "custo": 26.0, "categoria": "UTENSILIOS"}, {"nome": "FRIGIDEIRA F. TRIPLO 62635/26", "unidade": "UNIDADE", "custo": 208.04, "categoria": "UTENSILIOS"}, {"nome": "GARRAFA MOLHOS FIFO 710ML (IMPORTADO) FFFIFOCB24", "unidade": "UNIDADE", "custo": 35.47, "categoria": "UTENSILIOS"}, {"nome": "TAMPA GN 1/3 TRANSP PEGADOR 30CWCH135 (IMPORTADO)", "unidade": "UNIDADE", "custo": 28.16, "categoria": "UTENSILIOS"}, {"nome": "QJ PARMESAO SACHE CX 100X10G", "unidade": "UNIDADE", "custo": 1.0129, "categoria": "CMV - LATICINIOS"}, {"nome": "MOLHO NOVO GIANNI CX 15X1,2 KG", "unidade": "LITRO", "custo": 21.1753, "categoria": "CMV - MOLHOS"}, {"nome": "KAY OVEN CLEAN 1L", "unidade": "LITRO", "custo": 43.63, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "KAY RELEASE AGENT 473 ML", "unidade": "UNIDADE", "custo": 76.3, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "FIBRA AZUL SCOTCH BRITE 1 UN", "unidade": "UNIDADE", "custo": 8.67, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "TACA E SUPORTE CRISTAL CS 50UN", "unidade": "UNIDADE", "custo": 1.865, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PAPEL MANTEIGA RL 10 FOLHAS", "unidade": "UNIDADE", "custo": 0.361, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "CONCHA INOX - CABO RETO 59ML", "unidade": "UNIDADE", "custo": 44.27, "categoria": "UTENSILIOS"}, {"nome": "MOLHO POMODORO CX 15X1,2KG", "unidade": "LITRO", "custo": 19.8553, "categoria": "CMV - MOLHOS"}, {"nome": "BANDEJA PLASTICA PRETA 49X28CM", "unidade": "UNIDADE", "custo": 24.8, "categoria": "UTENSILIOS"}, {"nome": "PRATO FUNDO C/ABA BAMB SPOL 23/12UN", "unidade": "UNIDADE", "custo": 172.69, "categoria": "UTENSILIOS"}, {"nome": "PRATO QUAD SOB NOVA ARTE 12 UN 19,5 CM", "unidade": "UNIDADE", "custo": 14.5208, "categoria": "UTENSILIOS"}, {"nome": "PRATO BASE POLPETONE NOVA ARTE 860226", "unidade": "UNIDADE", "custo": 13.1425, "categoria": "UTENSILIOS"}, {"nome": "TRAVESSA QUAD MASSA MAMMA GRATINAR CX 6 UND", "unidade": "UNIDADE", "custo": 32.5717, "categoria": "UTENSILIOS"}, {"nome": "TRAV.QUADR LASAGNA E POLPETONE 12 UND-54282", "unidade": "UNIDADE", "custo": 17.4667, "categoria": "UTENSILIOS"}, {"nome": "GN DE INOX 1 1X 65 MM PERFURADA GN 11", "unidade": "UNIDADE", "custo": 135.89, "categoria": "UTENSILIOS"}, {"nome": "TABUA PLAST CORTE CARNE 30X60 AMARELA", "unidade": "UNIDADE", "custo": 107.34, "categoria": "UTENSILIOS"}, {"nome": "MOLHO PESTO CX 2KG", "unidade": "LITRO", "custo": 45.39, "categoria": "CMV - MOLHOS"}, {"nome": "MOLHO NOVO BRANCO CX 15X1,2KG", "unidade": "LITRO", "custo": 14.7047, "categoria": "CMV - MOLHOS"}, {"nome": "MOLHO DE QUEIJO CX 15X1,2KG", "unidade": "LITRO", "custo": 23.492, "categoria": "CMV - MOLHOS"}, {"nome": "PAPEL BANDEJA SPOL PCT 1000 UND", "unidade": "UNIDADE", "custo": 0.0628, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "FILE DE FRANGO 12X1KG", "unidade": "KILO", "custo": 16.9008, "categoria": "CMV - PROTEINAS"}, {"nome": "MOLHEIRA ELIPSE PRETA C/TAMPA 750ML CX 12", "unidade": "UNIDADE", "custo": 12.9917, "categoria": "UTENSILIOS"}, {"nome": "ESPONJA DUPLA FACE UN", "unidade": "UNIDADE", "custo": 0.77, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "UVAS PASSAS PRETAS S/SEMENTES 500GR", "unidade": "KILO", "custo": 16.18, "categoria": "CMV - CONSERVAS"}, {"nome": "ESPATULA SILICONE APRECIATTA 25781/100", "unidade": "UNIDADE", "custo": 34.08, "categoria": "UTENSILIOS"}, {"nome": "CAFE A VACUO - 500GR", "unidade": "KILO", "custo": 33.44, "categoria": "CMV - DEMAIS ALIMENTOS"}, {"nome": "QJ PARMESAO PECA (APROX 6KG)", "unidade": "KILO", "custo": 62.1, "categoria": "CMV - LATICINIOS"}, {"nome": "TABUA BAMBU FOCACCIA UND", "unidade": "UNIDADE", "custo": 26.61, "categoria": "UTENSILIOS"}, {"nome": "CACAROLA RASA ACO INOX 53/241", "unidade": "UNIDADE", "custo": 220.93, "categoria": "UTENSILIOS"}, {"nome": "CUBA ACO INOX 1/1 20MM S/ALCA 61051/020", "unidade": "UNIDADE", "custo": 93.04, "categoria": "UTENSILIOS"}, {"nome": "FACA LEGUMES INOX 3 PROFISSIONAL", "unidade": "UNIDADE", "custo": 19.41, "categoria": "UTENSILIOS"}, {"nome": "FACA CARNE INOX 8 PROFISSIONAL 24609/088", "unidade": "UNIDADE", "custo": 79.33, "categoria": "UTENSILIOS"}, {"nome": "PINCEL SILICONE 27,5X 4,5 CM PRETO", "unidade": "UNIDADE", "custo": 14.09, "categoria": "UTENSILIOS"}, {"nome": "BACON IN NATURA CUBOS CX 2X2KG SPOLETO", "unidade": "KILO", "custo": 17.315, "categoria": "CMV - PROTEINAS"}, {"nome": "SUMA BREAK UP BB 5L", "unidade": "LITRO", "custo": 13.416, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "RAVIOLI DE CARNE 24X0,200GR / 4,8KG", "unidade": "UNIDADE", "custo": 5.8208, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "POLPETONE DE CARNE CX 38X130G", "unidade": "UNIDADE", "custo": 5.4711, "categoria": "CMV - PROTEINAS"}, {"nome": "MAC FARFALLE 4X3KG IMPORTADO", "unidade": "KILO", "custo": 14.4033, "categoria": "CMV - MASSAS SECAS"}, {"nome": "ALCOOL LIQUIDO 70GL CX 12X1LT", "unidade": "UNIDADE", "custo": 6.2458, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "OLEO DE SOJA CX 20X900ML", "unidade": "UNIDADE", "custo": 8.2835, "categoria": "CMV - CONSERVAS"}, {"nome": "ACUCAR FD 10KG UNIAO", "unidade": "KILO", "custo": 5.091, "categoria": "CMV - CEREAIS, TEMPEROS E CONDIMENTOS"}, {"nome": "NUTELLA FD 6X650GR IMPORTADO", "unidade": "UNIDADE", "custo": 31.61, "categoria": "CMV - SOBREMESAS"}, {"nome": "MAC PENNETE RIGATE INTEGRALI 4X3KG IMPORTADO", "unidade": "KILO", "custo": 13.1333, "categoria": "CMV - MASSAS SECAS"}, {"nome": "MAC TAGLIATELLI 4X3KG IMPORTADO", "unidade": "KILO", "custo": 14.0758, "categoria": "CMV - MASSAS SECAS"}, {"nome": "PRATO COUPLE SPOL CX 12 UNID", "unidade": "UNIDADE", "custo": 26.0067, "categoria": "UTENSILIOS"}, {"nome": "PEITO FRANGO COZ DESF CONG CX 2X2,5KG", "unidade": "KILO", "custo": 21.212, "categoria": "CMV - PROTEINAS"}, {"nome": "VINHO TINTO SECO 1,48L", "unidade": "UNIDADE", "custo": 12.16, "categoria": "CMV - BEBIDAS"}, {"nome": "PASSADOR CHINOY 21CM", "unidade": "UNIDADE", "custo": 366.44, "categoria": "UTENSILIOS"}, {"nome": "MOLHO AL MARE CX25X0,150KG", "unidade": "UNIDADE", "custo": 3.3404, "categoria": "CMV - MOLHOS"}, {"nome": "MOLHO CARBONARA 25X0,150G - 3,75KG", "unidade": "UNIDADE", "custo": 3.1692, "categoria": "CMV - MOLHOS"}, {"nome": "MOLHO ALFREDO 25X0,150G - 3,75KG", "unidade": "UNIDADE", "custo": 5.0924, "categoria": "CMV - MOLHOS"}, {"nome": "OREGANO PCT 250GR IMPORTADO", "unidade": "KILO", "custo": 37.24, "categoria": "CMV - CEREAIS, TEMPEROS E CONDIMENTOS"}, {"nome": "SUMA CALC D5 5L BR002390", "unidade": "LITRO", "custo": 34.004, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "BICO DOSADOR ACO INOX PCT 1UND", "unidade": "UNIDADE", "custo": 13.33, "categoria": "UTENSILIOS"}, {"nome": "MOLHO CEASER CONG 6X0,5KG - 3KG", "unidade": "LITRO", "custo": 29.0233, "categoria": "CMV - MOLHOS"}, {"nome": "TACHO DEC N 06", "unidade": "UNIDADE", "custo": 12.56, "categoria": "UTENSILIOS"}, {"nome": "CREMA DI ACETO BALSAMICO GF 250ML (IMPORTADO)", "unidade": "UNIDADE", "custo": 26.61, "categoria": "CMV - AZEITE E VINAGRE"}, {"nome": "TAMPA MOLHEIRA ELIPSE CX 12 UNID - MET 3870T", "unidade": "UNIDADE", "custo": 6.1167, "categoria": "UTENSILIOS"}, {"nome": "PIMENTA CALABRESA FL. 250 GRS IMPORTADO", "unidade": "KILO", "custo": 30.68, "categoria": "CMV - CEREAIS, TEMPEROS E CONDIMENTOS"}, {"nome": "RAVIOLI QJ E PRESUNTO 24X0,2KG - 4,8KG", "unidade": "UNIDADE", "custo": 4.9129, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "PASTILHA FORNO DE CONSERVACAO BALDE C/ 150 UNDS (IMPORTADO)", "unidade": "UNIDADE", "custo": 4.1071, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "BORRACHA FORNO XS UND (IMPORTADO)", "unidade": "UNIDADE", "custo": 413.12, "categoria": "UTENSILIOS"}, {"nome": "RALADOR INOX IMPORTADO", "unidade": "UNIDADE", "custo": 397.3, "categoria": "UTENSILIOS"}, {"nome": "EMB PLAST P/ MASSA MAMMA 250 UN REF 042", "unidade": "UNIDADE", "custo": 2.1877, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "MILHO VERDE 24X170G /4,08 KG", "unidade": "KILO", "custo": 20.1422, "categoria": "CMV - CONSERVAS"}, {"nome": "LIVRO AVANTI SPOLETO", "unidade": "UNIDADE", "custo": 16.9, "categoria": "UTENSILIOS"}, {"nome": "TAMPA PARA TACHO DEC N06", "unidade": "UNIDADE", "custo": 2.2, "categoria": "UTENSILIOS"}, {"nome": "PORTA BEBIDAS FARDO C/ 50", "unidade": "UNIDADE", "custo": 0.1772, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "LACRE SACO TORRADA SPOL ROL C/ 2000 UNID", "unidade": "UNIDADE", "custo": 0.0115, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "TABUA POLIE CORTE 15X30X50 BRANCA", "unidade": "UNIDADE", "custo": 90.91, "categoria": "UTENSILIOS"}, {"nome": "TABUA POLIE CORTE 15X30X50 AZUL", "unidade": "UNIDADE", "custo": 99.1, "categoria": "UTENSILIOS"}, {"nome": "TABUA POLIE CORTE 15X30X50 VERMELHA", "unidade": "UNIDADE", "custo": 103.09, "categoria": "UTENSILIOS"}, {"nome": "TABUA POLIE CORTE 15X30X50 VERDE", "unidade": "UNIDADE", "custo": 99.88, "categoria": "UTENSILIOS"}, {"nome": "TABUA POLIE CORTE 15X30X50 AMARELA", "unidade": "UNIDADE", "custo": 94.45, "categoria": "UTENSILIOS"}, {"nome": "CREMEIRA ALUMINIO 300ML", "unidade": "UNIDADE", "custo": 30.39, "categoria": "UTENSILIOS"}, {"nome": "RICOTA DE BUFALA PCT 4X320G", "unidade": "KILO", "custo": 19.1406, "categoria": "CMV - LATICINIOS"}, {"nome": "ORGANIZADOR REF. 70800", "unidade": "UNIDADE", "custo": 47.2, "categoria": "UTENSILIOS"}, {"nome": "SABONETE BACTERICIDA PLUS FREE W5003 800ML", "unidade": "UNIDADE", "custo": 22.27, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "GALAO ALCOOL GEL 5L", "unidade": "LITRO", "custo": 11.002, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "PALHA ITALIANA CONG CX 28 X 0,065G / 1,82KG", "unidade": "UNIDADE", "custo": 3.0275, "categoria": "CMV - SOBREMESAS"}, {"nome": "LUVA LATEX PAR AZUL SOFT LIMP", "unidade": "UNIDADE", "custo": 5.32, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "RESERVATORIO SABONETEIRA", "unidade": "UNIDADE", "custo": 11.6, "categoria": "UTENSILIOS"}, {"nome": "BICO SABONETEIRA (IMPORTADO)", "unidade": "UNIDADE", "custo": 5.65, "categoria": "UTENSILIOS"}, {"nome": "PAPEL HAMBURGUER 35X35 SPOL PT 400 FLS", "unidade": "UNIDADE", "custo": 0.1171, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SABONETEIRA DIVERSEY", "unidade": "UNIDADE", "custo": 109.16, "categoria": "UTENSILIOS"}, {"nome": "CASTANHA DE CAJU 200 G TORRADA", "unidade": "KILO", "custo": 43.45, "categoria": "CMV - CEREAIS, TEMPEROS E CONDIMENTOS"}, {"nome": "MUSSARELA BUFALA 8X250G", "unidade": "UNIDADE", "custo": 15.7662, "categoria": "CMV - LATICINIOS"}, {"nome": "BOBINA PDV TERM 80X100M 16UN BRANCA", "unidade": "UNIDADE", "custo": 7.9656, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "VINHO BRANCO GF 1,47L", "unidade": "UNIDADE", "custo": 13.14, "categoria": "CMV - BEBIDAS"}, {"nome": "FIBRA LIMP MULTIUSO VERDE 10UN", "unidade": "UNIDADE", "custo": 1.708, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "COGUMELO ASSADO CONG 8X0,5KG - 4,0KG", "unidade": "KILO", "custo": 47.87, "categoria": "CMV - CONSERVAS"}, {"nome": "MANTEIGA SEM SAL 12X200GR", "unidade": "KILO", "custo": 52.3042, "categoria": "CMV - LATICINIOS"}, {"nome": "RAVIOLI DE RICOTA 24X0,200GR/4,8KG", "unidade": "UNIDADE", "custo": 5.8625, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "RAVIOLI DE MUSSARELA DE BUFALA 24X0,200 - 4,8 KG", "unidade": "UNIDADE", "custo": 5.6117, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "LUVA VINILFLEX S/PO PRETA (GG) PCT 100UN", "unidade": "UNIDADE", "custo": 0.3037, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PAS FORNO DETER C/150 VERDE 5601535 IMPORTADO", "unidade": "UNIDADE", "custo": 4.2997, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "CAIXA INTERNA FORNO 450G 200UND", "unidade": "UNIDADE", "custo": 1.62, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "LUVA VINILFLEX S/PO (G) PCT 100UN", "unidade": "UNIDADE", "custo": 0.2841, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "IMA 4,5X4,5CM PCT C/24 - GNOCCHI DO BEM 2021", "unidade": "UNIDADE", "custo": 0.31, "categoria": "UTENSILIOS"}, {"nome": "KIT CARTA DOLAR PT C/24 - GNOCCHI DO BEM 2021", "unidade": "UNIDADE", "custo": 0.1829, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "EMBALAGEM FOCACCIA MENOR PCT C/ 50 UND", "unidade": "UNIDADE", "custo": 0.9698, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "MILHO VERDE 30X170G / 5,10 KG", "unidade": "KILO", "custo": 20.1412, "categoria": "CMV - CONSERVAS"}, {"nome": "OVO INTEGRAL PASTEURIZADO DESIDRATADO 720G", "unidade": "KILO", "custo": 54.3611, "categoria": "CMV - CONSERVAS"}, {"nome": "PUDIM LEITE CONDENSADO 8 X 100G", "unidade": "UNIDADE", "custo": 4.945, "categoria": "CMV - SOBREMESAS"}, {"nome": "FOCACCIA MUSSARELA CONG 12 X 270G - 3,24KG", "unidade": "UNIDADE", "custo": 6.35, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "DEDEIRAS LATEX PT 50 UM TAM 4", "unidade": "UNIDADE", "custo": 0.4184, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "MOLHO MOSTARDA E MEL 10X0,3KG - 3KG", "unidade": "KILO", "custo": 33.4333, "categoria": "CMV - MOLHOS"}, {"nome": "SACO TORRADA BG KNT 32X14 PCT 1000 UND", "unidade": "UNIDADE", "custo": 0.054, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "CORACAO DE ALCATRA MATURATTA APROX 9 A 20 KGS CONG", "unidade": "KILO", "custo": 42.29, "categoria": "CMV - PROTEINAS"}, {"nome": "AVENTAL JEANS SPOLETO", "unidade": "UNIDADE", "custo": 63.62, "categoria": "UNIFORMES"}, {"nome": "BOINA RISCA DE GIZ SPOLETO", "unidade": "UNIDADE", "custo": 48.95, "categoria": "UNIFORMES"}, {"nome": "GATILHO PULVERIZADOR 500ML GRAD", "unidade": "UNIDADE", "custo": 7.77, "categoria": "UTENSILIOS"}, {"nome": "FRASCO PULVERIZADOR 500ML GRAD", "unidade": "UNIDADE", "custo": 5.74, "categoria": "UTENSILIOS"}, {"nome": "FILE DE FRANGO CONG CX 6X16 X 120 G", "unidade": "KILO", "custo": 29.1745, "categoria": "CMV - PROTEINAS"}, {"nome": "SACO SPOL PCT C/100", "unidade": "UNIDADE", "custo": 0.504, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SACO TALHER PAPEL SPOL 15CM CX 1000 UND", "unidade": "UNIDADE", "custo": 0.0329, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "CANUDO PAPEL EMBAL CX 1000 UNID", "unidade": "UNIDADE", "custo": 0.0714, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "RAVIOLI DE CARNE SECA CONG 12X0,200 - 2,4KG", "unidade": "UNIDADE", "custo": 5.7567, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "BOBINA QRCODE PDV TERM 80X100M 16UN SPOL", "unidade": "UNIDADE", "custo": 9.1825, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "LACRE TRIGO RL 2000UN", "unidade": "UNIDADE", "custo": 0.0245, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "SUPER SOL BB 5L", "unidade": "LITRO", "custo": 13.736, "categoria": "MATERIAL DE LIMPEZA"}, {"nome": "ARROZ ROMA CX 10 KG (IMPORTADO)", "unidade": "KILO", "custo": 14.259, "categoria": "CMV - MASSAS SECAS"}, {"nome": "CAMARAO 51/60 PEDOFF (140/165 UN/KG) / 2KG", "unidade": "KILO", "custo": 66.05, "categoria": "CMV - PROTEINAS"}, {"nome": "MAC SPAGUETTI TEFLON PAIK COOK 4X3KG (IMPORTADO)", "unidade": "KILO", "custo": 10.8042, "categoria": "CMV - MASSAS SECAS"}, {"nome": "FILE SOBRECOXA COM PELE CONG CX 18KG", "unidade": "KILO", "custo": 13.7739, "categoria": "CMV - PROTEINAS"}, {"nome": "GUARDANAPO PAPEL EMB TRIGO 20X30 COM 1000 SACHES", "unidade": "UNIDADE", "custo": 0.0583, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "COLETE TREINAMENTO SPOLETO", "unidade": "UNIDADE", "custo": 82.51, "categoria": "UNIFORMES"}, {"nome": "DOLMA SPOLETO P", "unidade": "UNIDADE", "custo": 115.12, "categoria": "UNIFORMES"}, {"nome": "DOLMA SPOLETO M", "unidade": "UNIDADE", "custo": 115.12, "categoria": "UNIFORMES"}, {"nome": "DOLMA SPOLETO G", "unidade": "UNIDADE", "custo": 115.12, "categoria": "UNIFORMES"}, {"nome": "FACA CHURRASCO BUZIOS CX 12 UND (29812/065)", "unidade": "UNIDADE", "custo": 2.5208, "categoria": "UTENSILIOS"}, {"nome": "GARFO MESA BUZIOS CX 12 UND (29812/066)", "unidade": "UNIDADE", "custo": 2.0592, "categoria": "UTENSILIOS"}, {"nome": "FLYER CHECKOUT NOVO SPOL PT 500UN", "unidade": "UNIDADE", "custo": 0.1655, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "PALMITO PICADO 12X1,05KG / 12,6KG", "unidade": "KILO", "custo": 24.9968, "categoria": "CMV - CONSERVAS"}, {"nome": "OVO CODORNA CONSERVA 15X900G / 13,5KG", "unidade": "KILO", "custo": 20.2948, "categoria": "CMV - CONSERVAS"}, {"nome": "AZEITE COLLE DEL TRUFA BRANCA 250ML (IMPORTADO)", "unidade": "UNIDADE", "custo": 69.87, "categoria": "CMV - AZEITE E VINAGRE"}, {"nome": "PIZZA BALCAO 24 CM MUCARELA CONG 10X0,360KG -3,600 KG", "unidade": "UNIDADE", "custo": 9.626, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "PIZZA BALCAO 24 CM CALABRESA CONG 10X0,400 KG - 4,000KG", "unidade": "UNIDADE", "custo": 11.253, "categoria": "CMV - MASSAS FRESCAS E RISOTTO"}, {"nome": "QUEIJO MUSSARELA TERRA VIVA PC 4KG", "unidade": "KILO", "custo": 32.03, "categoria": "CMV - LATICINIOS"}, {"nome": "COLHER MESA BUZIOS SPOL CX 12 UND (29812/067)", "unidade": "UNIDADE", "custo": 2.0408, "categoria": "UTENSILIOS"}, {"nome": "PA PARA PIZZA 26CM CABO 30CM", "unidade": "UNIDADE", "custo": 74.85, "categoria": "UTENSILIOS"}, {"nome": "DOLMA CAIXA FEMININO P", "unidade": "UNIDADE", "custo": 105.81, "categoria": "UNIFORMES"}, {"nome": "DOLMA CAIXA MASCULINO P", "unidade": "UNIDADE", "custo": 105.81, "categoria": "UNIFORMES"}, {"nome": "DOLMA CAIXA FEMININO M", "unidade": "UNIDADE", "custo": 105.81, "categoria": "UNIFORMES"}, {"nome": "DOLMA CAIXA MASCULINO M", "unidade": "UNIDADE", "custo": 105.81, "categoria": "UNIFORMES"}, {"nome": "DOLMA CAIXA FEMININO G", "unidade": "UNIDADE", "custo": 105.81, "categoria": "UNIFORMES"}, {"nome": "DOLMA CAIXA MASCULINO G", "unidade": "UNIDADE", "custo": 105.81, "categoria": "UNIFORMES"}, {"nome": "MOLHO RAGU DE LINGUICA CX 15X1,2KG - 18KG", "unidade": "LITRO", "custo": 19.8972, "categoria": "CMV - MOLHOS"}, {"nome": "CAIXA DE PIZZA SPOL BALCAO 25CM PT 50UND", "unidade": "UNIDADE", "custo": 1.2746, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "COOKIE BAUNILHA SOFT C/ GOTAS CX 24 X 50G", "unidade": "UNIDADE", "custo": 3.07, "categoria": "CMV - SOBREMESAS"}, {"nome": "COPO PAPEL 300ML CX 2000 SPOL NOVA ARTE", "unidade": "UNIDADE", "custo": 0.2616, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "POTE 80ML LISO CX 500UN", "unidade": "UNIDADE", "custo": 0.074, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "AZEITONA PRETA FATIADA EM BAG 6 X 1,01 KG (IMPORTADO)", "unidade": "KILO", "custo": 29.15, "categoria": "CMV - CONSERVAS"}, {"nome": "TAMPA POTE 80ML LISO CX 100UN", "unidade": "UNIDADE", "custo": 0.15, "categoria": "CMV - EMBALAGENS E DESCARTAVEIS"}, {"nome": "BAMBINI - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 6.17, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "BAMBINI - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 9.51, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 5.58, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 8.94, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA DE MASSA - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 6.47, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA DE MASSA - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 9.83, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA TRADIZIONALE - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 8.29, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA TRADIZIONALE - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 11.6, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 8.88, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 12.24, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "GNOCCHI - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 10.93, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "GNOCCHI - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 14.28, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 13.23, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 14.07, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MAMMA - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 11.71, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MAMMA - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 16.08, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI CARNE SECA - CRIE DO SEU JEITO (BALCAO)", "unidade": "UNIDADE", "custo": 12.57, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI CARNE SECA - CRIE DO SEU JEITO (DELIVERY)", "unidade": "UNIDADE", "custo": 15.92, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ITALIANA SEM INGREDIENTES - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 4.97, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ITALIANA SEM INGREDIENTES - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 8.66, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA BOLOGNESA CLASSICO (BALCAO)", "unidade": "UNIDADE", "custo": 5.58, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA BOLOGNESA CLASSICO (DELIVERY)", "unidade": "UNIDADE", "custo": 8.95, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ALFREDO - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 8.56, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ALFREDO - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 11.88, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA CEASAR - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 8.07, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA CEASAR - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 8.07, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "GNOCCHI MASSA E MOLHO - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 8.33, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "GNOCCHI MASSA E MOLHO - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 12.19, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI MASSA E MOLHO.- RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 9.69, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI MASSA E MOLHO.- RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 13.17, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI SEM INGREDIENTES - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 9.6898, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI SEM INGREDIENTES - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 13.29, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ALFREDO COM TIRAS DE FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 10.66, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ALFREDO COM TIRAS DE FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 10.66, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE COGUMELOS - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 7.87, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE COGUMELOS - RECEITAS DO CHEF(DELIVERY)", "unidade": "UNIDADE", "custo": 8.49, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 9.66, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 13.02, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA COM POLPETTONE - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 7.56, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA COM POLPETTONE - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 7.56, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO GORGONZOLA E ALHO PORO COM FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 10.1, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO GORGONZOLA E ALHO PORO COM FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 13.46, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE CAMARAO AL MARE - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 12.28, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE CAMARAO AL MARE - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 15.63, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA AL MARE - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 11.67, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA AL MARE - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 14.99, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ALFREDO COM CAMAROES - RECEITAS DO CHEF (BALCAO)", "unidade": "UNIDADE", "custo": 13.38, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA ALFREDO COM CAMAROES - RECEITAS DO CHEF (DELIVERY)", "unidade": "UNIDADE", "custo": 16.69, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 12.88, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 16.23, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "LASAGNA (BALCAO)", "unidade": "UNIDADE", "custo": 12.61, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "LASAGNA (DELIVERY)", "unidade": "UNIDADE", "custo": 15.82, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 12.9, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 16.25, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI ESPECIAL MASSA E MOLHO (BALCAO)", "unidade": "UNIDADE", "custo": 9.87, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RAVIOLI ESPECIAL MASSA E MOLHO (DELIVERY)", "unidade": "UNIDADE", "custo": 15.92, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 16.27, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 17.11, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 16.11, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 19.46, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "ESCALOPE DE CARNE COM SPAGHETTI AO POMODORO (BALCAO)", "unidade": "UNIDADE", "custo": 11.35, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "ESCALOPE DE CARNE COM SPAGHETTI AO POMODORO (DELIVERY)", "unidade": "UNIDADE", "custo": 11.35, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE ALFREDO COM TIRAS DE CARNE (BALCAO)", "unidade": "UNIDADE", "custo": 14.9108, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE ALFREDO COM TIRAS DE CARNE (DELIVERY)", "unidade": "UNIDADE", "custo": 18.2669, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 17.2765, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 17.6645, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "ESCALOPE DE CARNE COM FETTUCCINE ALFREDO (BALCAO)", "unidade": "UNIDADE", "custo": 14.91, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "ESCALOPE DE CARNE COM FETTUCCINE ALFREDO (DELIVERY)", "unidade": "UNIDADE", "custo": 18.27, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE TIRAS DE CARNE, QUEIJOS E ALHO PORÓ (BALCAO)", "unidade": "UNIDADE", "custo": 14.2354, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE TIRAS DE CARNE, QUEIJOS E ALHO PORÓ (DELIVERY)", "unidade": "UNIDADE", "custo": 17.5915, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM CARNE A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 16.4938, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM CARNE A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 16.6955, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE POMODORO COM RICOTA (BALCAO)", "unidade": "UNIDADE", "custo": 7.1041, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE POMODORO COM RICOTA (DELIVERY)", "unidade": "UNIDADE", "custo": 10.4602, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PENNE FRANGO E BACON (BALCAO)", "unidade": "UNIDADE", "custo": 7.2546, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PENNE FRANGO E BACON (DELIVERY)", "unidade": "UNIDADE", "custo": 10.6107, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA CARBONARA (BALCAO)", "unidade": "UNIDADE", "custo": 8.0514, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MASSA CARBONARA (DELIVERY)", "unidade": "UNIDADE", "custo": 14.3319, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SPAGHETTI COM TIRAS DE FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 7.5783, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SPAGHETTI COM TIRAS DE FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 10.9345, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PENNE À BOLOGNESA E BACON (BALCAO)", "unidade": "UNIDADE", "custo": 7.5302, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PENNE À BOLOGNESA E BACON (DELIVERY)", "unidade": "UNIDADE", "custo": 10.8863, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE ALLEGRO (BALCAO)", "unidade": "UNIDADE", "custo": 8.3734, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE ALLEGRO (DELIVERY)", "unidade": "UNIDADE", "custo": 11.7295, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO COM SPAGHETTI RÚSTICO (BALCAO)", "unidade": "UNIDADE", "custo": 9.3128, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO COM SPAGHETTI RÚSTICO (DELIVERY)", "unidade": "UNIDADE", "custo": 12.669, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SPAGHETTI COM FILÉ DE FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 9.8194, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SPAGHETTI COM FILÉ DE FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 13.1755, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SPAGHETTI CARBONARA CI (BALCAO)", "unidade": "UNIDADE", "custo": 7.8486, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SPAGHETTI CARBONARA CI (DELIVERY)", "unidade": "UNIDADE", "custo": 11.2047, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA CAESAR COM TIRAS DE FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 8.07, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SALADA CAESAR COM TIRAS DE FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 8.54, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM SALADA DE MASSA (BALCAO)", "unidade": "UNIDADE", "custo": 9.66, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM SALADA DE MASSA (DELIVERY)", "unidade": "UNIDADE", "custo": 13.02, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM SPAGHETTI AO POMODORO (BALCAO)", "unidade": "UNIDADE", "custo": 8.99, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM SPAGHETTI AO POMODORO (DELIVERY)", "unidade": "UNIDADE", "custo": 12.02, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SOBRECOXA COM SALADA DE MASSA (BALCAO)", "unidade": "UNIDADE", "custo": 9.0594, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SOBRECOXA COM SALADA DE MASSA (DELIVERY)", "unidade": "UNIDADE", "custo": 12.4155, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SOBRECOXA COM SPAGHETTI AO POMODORO (BALCAO)", "unidade": "UNIDADE", "custo": 9.85, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SOBRECOXA COM SPAGHETTI AO POMODORO (DELIVERY)", "unidade": "UNIDADE", "custo": 13.21, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 9.6649, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 13.0211, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 12.8756, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 16.2318, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 12.895, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM FRANGO A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 16.2512, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 16.2708, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 17.1104, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 16.1057, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM FRANGO A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 19.4619, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 17.2765, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM FRANGO A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 17.6645, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 7.1624, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 10.0684, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "POLPETTONE COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 8.9946, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "POLPETTONE COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 11.9006, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM MASSA ARTESANAL (BALCAO)", "unidade": "UNIDADE", "custo": 10.6235, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO COM MASSA ARTESANAL (DELIVERY)", "unidade": "UNIDADE", "custo": 14.857, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A MILANESA COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 9.3866, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A MILANESA COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 12.2927, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A MILANESA COM MASSA ARTESANAL (BALCAO)", "unidade": "UNIDADE", "custo": 12.8477, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A MILANESA COM MASSA ARTESANAL (DELIVERY)", "unidade": "UNIDADE", "custo": 10.9789, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A MILANESA COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 8.6039, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A MILANESA COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 6.1904, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A PARMEGIANA COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 12.6167, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A PARMEGIANA COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 15.5228, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A MILANESA COM MASSA ARTESANAL (BALCAO)", "unidade": "UNIDADE", "custo": 12.065, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A MILANESA COM MASSA ARTESANAL (DELIVERY)", "unidade": "UNIDADE", "custo": 10.9789, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 9.5181, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 6.1904, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A PARMEGIANA COM MASSA ARTESANAL (BALCAO)", "unidade": "UNIDADE", "custo": 16.0778, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A PARMEGIANA COM MASSA ARTESANAL (DELIVERY)", "unidade": "UNIDADE", "custo": 10.9789, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE COM MASSA ARTESANAL (BALCAO)", "unidade": "UNIDADE", "custo": 12.9792, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE COM MASSA ARTESANAL (DELIVERY)", "unidade": "UNIDADE", "custo": 10.9789, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE PARMEGINA COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 11.834, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE PARMEGINA COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 6.1904, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE PARMEGIANA COM MASSA ARTESANAL (BALCAO)", "unidade": "UNIDADE", "custo": 15.2951, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE PARMEGIANA COM MASSA ARTESANAL (DELIVERY)", "unidade": "UNIDADE", "custo": 10.9789, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CONTROFILETTO COM MASSA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 18.1254, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CONTROFILETTO COM MASSA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 6.1904, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CONTROFILETTO COM MASSA ARTESANAL (BALCAO)", "unidade": "UNIDADE", "custo": 21.5865, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CONTROFILETTO COM MASSA ARTESANAL (DELIVERY)", "unidade": "UNIDADE", "custo": 10.9789, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM CARNE A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 10.8762, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM CARNE A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 14.23, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM CARNE A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 12.0929, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM CARNE A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 15.45, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM CARNE A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 14.1063, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE MARINARA COM CARNE A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 17.46, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM CARNE A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 15.488, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM CARNE A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 18.84, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM CARNE A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 15.323, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FETTUCCINE GORGONZOLA COM CARNE A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 18.68, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM CARNE A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 16.4938, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "RISOTTO DE QUEIJO COM CARNE A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 16.6955, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOLHO CARBONARA (BALCAO)", "unidade": "UNIDADE", "custo": 3.5077, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOLHO CARBONARA (DELIVERY)", "unidade": "UNIDADE", "custo": 3.51, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOLHO AL MARE (BALCAO)", "unidade": "UNIDADE", "custo": 3.6595, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOLHO AL MARE (DELIVERY)", "unidade": "UNIDADE", "custo": 3.66, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOLHO ALFREDO (BALCAO)", "unidade": "UNIDADE", "custo": 5.3655, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOLHO ALFREDO (DELIVERY)", "unidade": "UNIDADE", "custo": 5.37, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "QUEIJO PARMESÃO SACHE (BALCAO)", "unidade": "UNIDADE", "custo": 0.96, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "QUEIJO PARMESÃO SACHE (DELIVERY)", "unidade": "UNIDADE", "custo": 0.9596, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "GRATINE SUA MASSA (BALCAO)", "unidade": "UNIDADE", "custo": 2.479, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "GRATINE SUA MASSA (DELIVERY)", "unidade": "UNIDADE", "custo": 2.479, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "EMBALAGEM PARA VIAGEM (BALCAO)", "unidade": "UNIDADE", "custo": 5.0378, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "EMBALAGEM PARA VIAGEM (DELIVERY)", "unidade": "UNIDADE", "custo": 5.04, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "4 INGREDIENTES EXTRAS (BALCAO)", "unidade": "UNIDADE", "custo": 1.74, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "4 INGREDIENTES EXTRAS (DELIVERY)", "unidade": "UNIDADE", "custo": 1.74, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "TIRAS DE FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 2.1, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "TIRAS DE FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 2.1, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOZZARELA DE BUFALA (BALCAO)", "unidade": "UNIDADE", "custo": 3.852, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "MOZZARELA DE BUFALA (DELIVERY)", "unidade": "UNIDADE", "custo": 3.852, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "COSTELA DESFIADA (BALCAO)", "unidade": "UNIDADE", "custo": 3.8482, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "COSTELA DESFIADA (DELIVERY)", "unidade": "UNIDADE", "custo": 3.85, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "TIRAS DE CARNE (BALCAO)", "unidade": "UNIDADE", "custo": 3.1169, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "TIRAS DE CARNE (DELIVERY)", "unidade": "UNIDADE", "custo": 3.1169, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CAMARÕES SPECIALI (BALCAO)", "unidade": "UNIDADE", "custo": 4.8142, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CAMARÕES SPECIALI (DELIVERY)", "unidade": "UNIDADE", "custo": 4.8142, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SOBRECOXA DE FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 3.35, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "SOBRECOXA DE FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 3.35, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO (BALCAO)", "unidade": "UNIDADE", "custo": 3.8781, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FILÉ DE FRANGO (DELIVERY)", "unidade": "UNIDADE", "custo": 3.8781, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "POLPETTONE (BALCAO)", "unidade": "UNIDADE", "custo": 5.7103, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "POLPETTONE (DELIVERY)", "unidade": "UNIDADE", "custo": 5.7103, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "ESCALOPE DE CARNE (BALCAO)", "unidade": "UNIDADE", "custo": 6.2338, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "ESCALOPE DE CARNE (DELIVERY)", "unidade": "UNIDADE", "custo": 6.23, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 6.1, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 6.1, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 9.33, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FRANGO A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 9.33, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CONTROFILETTO (BALCAO)", "unidade": "UNIDADE", "custo": 14.841, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CONTROFILETTO (DELIVERY)", "unidade": "UNIDADE", "custo": 14.84, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A MILANESA (BALCAO)", "unidade": "UNIDADE", "custo": 5.32, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A MILANESA (DELIVERY)", "unidade": "UNIDADE", "custo": 5.32, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A PARMEGIANA (BALCAO)", "unidade": "UNIDADE", "custo": 8.55, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "CARNE A PARMEGIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 8.55, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA MUSSARELA (BALCAO)", "unidade": "UNIDADE", "custo": 9.0585, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA MUSSARELA (DELIVERY)", "unidade": "UNIDADE", "custo": 10.5039, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA CALABRESA (BALCAO)", "unidade": "UNIDADE", "custo": 9.7559, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA CALABRESA (DELIVERY)", "unidade": "UNIDADE", "custo": 11.2012, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA QUEIJOS (BALCAO)", "unidade": "UNIDADE", "custo": 9.89, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA QUEIJOS (DELIVERY)", "unidade": "UNIDADE", "custo": 12.06, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA COGUMELO (BALCAO)", "unidade": "UNIDADE", "custo": 10.3191, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA COGUMELO (DELIVERY)", "unidade": "UNIDADE", "custo": 11.7644, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA MARGHERITA (BALCAO)", "unidade": "UNIDADE", "custo": 11.8517, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "FOCACCIA MARGHERITA (DELIVERY)", "unidade": "UNIDADE", "custo": 13.297, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PALHA ITALIANA (BALCAO)", "unidade": "UNIDADE", "custo": 2.8999, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PALHA ITALIANA (DELIVERY)", "unidade": "UNIDADE", "custo": 2.8999, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PUDIM (BALCAO)", "unidade": "UNIDADE", "custo": 5.1667, "categoria": "CMV - PRODUTOS PRONTOS"}, {"nome": "PUDIM (DELIVERY)", "unidade": "UNIDADE", "custo": 5.1667, "categoria": "CMV - PRODUTOS PRONTOS"}];
+
+// Index por nome para busca rápida
+const PRODUTOS_IDX = {};
+PRODUTOS_DB.forEach(p => { PRODUTOS_IDX[p.nome] = p; });
+
+function filtrarProdutos() {
+  const q = document.getElementById('desp-busca').value.trim().toUpperCase();
+  const sug = document.getElementById('desp-sugestoes');
+  
+  // Clear selection when typing
+  document.getElementById('desp-produto').value = '';
+  document.getElementById('desp-unidade').value = '';
+  document.getElementById('desp-custo').value = '';
+  document.getElementById('desp-categoria').value = '';
+  document.getElementById('desp-perda').value = '';
+  
+  if (q.length < 2) { sug.style.display = 'none'; return; }
+  
+  const matches = PRODUTOS_DB.filter(p => p.nome.toUpperCase().includes(q)).slice(0, 8);
+  if (!matches.length) { sug.style.display = 'none'; return; }
+  
+  sug.innerHTML = matches.map(p => `
+    <div onclick="selecionarProduto('${p.nome.replace(/'/g, "\\'")}')" 
+         style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px;"
+         onmouseover="this.style.background='var(--cream)'" 
+         onmouseout="this.style.background=''">
+      <div style="font-weight:600;color:var(--text)">${p.nome}</div>
+      <div style="font-size:11px;color:var(--muted)">${p.categoria} · ${fmtR(p.custo)}/${p.unidade}</div>
+    </div>
+  `).join('');
+  sug.style.display = 'block';
+}
+
+function selecionarProduto(nome) {
+  const p = PRODUTOS_IDX[nome];
+  if (!p) return;
+  document.getElementById('desp-busca').value = p.nome;
+  document.getElementById('desp-produto').value = p.nome;
+  document.getElementById('desp-unidade').value = p.unidade;
+  document.getElementById('desp-custo').value = fmtR(p.custo);
+  document.getElementById('desp-categoria').value = p.categoria;
+  document.getElementById('desp-sugestoes').style.display = 'none';
+  calcPerda();
+  document.getElementById('desp-qtd').focus();
+}
+
+function calcPerda() {
+  const nomeProd = document.getElementById('desp-produto').value;
+  const qtd = parseFloat(document.getElementById('desp-qtd').value) || 0;
+  const p = PRODUTOS_IDX[nomeProd];
+  if (p && qtd > 0) {
+    const perda = parseFloat((p.custo * qtd).toFixed(2));
+    document.getElementById('desp-perda').value = fmtR(perda);
+  } else {
+    document.getElementById('desp-perda').value = '';
+  }
+}
+
+// ── DESPERDÍCIO ────────────────────────────────────────────────────────
+function salvarDesperdicio() {
+  const data = document.getElementById('desp-data').value;
+  const produto = document.getElementById('desp-produto').value;
+  const qtd = parseFloat(document.getElementById('desp-qtd').value);
+  const motivo = document.getElementById('desp-motivo').value;
+  const outro = document.getElementById('desp-outro').value.trim();
+
+  if (!data) { toast('Informe a data', 'error'); return; }
+  if (!produto) { toast('Selecione um produto da lista', 'error'); return; }
+  if (!qtd || qtd <= 0) { toast('Informe a quantidade', 'error'); return; }
+  if (!motivo) { toast('Selecione o motivo', 'error'); return; }
+
+  const p = PRODUTOS_IDX[produto];
+  const perda = parseFloat((p.custo * qtd).toFixed(2));
+
+  const desp = {
+    id: Date.now(),
+    data,
+    produto,
+    unidade: p.unidade,
+    categoria: p.categoria,
+    qtd,
+    custo: p.custo,
+    perda,
+    motivo,
+    outro: motivo === 'Outro' ? outro : ''
+  };
+
+  state.desperdícios.push(desp);
+  save();
+  enviar('desperdicio', desp);
+  toast(`Desperdício salvo! Perda: ${fmtR(perda)} ✓`, 'success');
+
+  // Reset form
+  document.getElementById('desp-busca').value = '';
+  document.getElementById('desp-produto').value = '';
+  document.getElementById('desp-unidade').value = '';
+  document.getElementById('desp-custo').value = '';
+  document.getElementById('desp-categoria').value = '';
+  document.getElementById('desp-qtd').value = '';
+  document.getElementById('desp-perda').value = '';
+  document.getElementById('desp-motivo').value = '';
+  document.getElementById('desp-outro').value = '';
+  document.getElementById('desp-outro-field').style.display = 'none';
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#desp-busca') && !e.target.closest('#desp-sugestoes')) {
+    document.getElementById('desp-sugestoes').style.display = 'none';
+  }
+});
+
+// Show/hide "Outro" field
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'desp-motivo') {
+    document.getElementById('desp-outro-field').style.display = 
+      e.target.value === 'Outro' ? 'block' : 'none';
+  }
+});
+
+// ── SHEETS ─────────────────────────────────────────────────────────────
+async function enviar(tipo, dados) {
   const url = state.config.scriptUrl;
   if (!url) return;
   try {
-    // Google Apps Script requer GET com parâmetros via URL ou jsonp
-    // Usamos um form submit trick para contornar CORS
     const params = encodeURIComponent(JSON.stringify({ tipo, dados }));
-    const fullUrl = `${url}?payload=${params}`;
-    
-    // Cria um iframe invisível para fazer o request sem bloquear CORS
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = fullUrl;
+    iframe.src = `${url}?payload=${params}`;
     document.body.appendChild(iframe);
     setTimeout(() => document.body.removeChild(iframe), 5000);
-  } catch(e) {
-    console.warn('Sheets sync failed:', e);
-  }
+  } catch(e) { console.warn('Sheets sync failed:', e); }
 }
 
-// ══════════════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════════════
-function parseData(dataStr) {
-  if (!dataStr) return new Date('invalid');
-  if (/^\d{4}-\d{2}-\d{2}$/.test(String(dataStr))) return new Date(dataStr + 'T00:00:00');
-  if (/^\d{2}\/\d{2}\/\d{4}$/.test(String(dataStr))) {
-    const [d, m, y] = String(dataStr).split('/');
-    return new Date(`${y}-${m}-${d}T00:00:00`);
-  }
-  if (String(dataStr).includes('T')) return new Date(dataStr);
-  return new Date(dataStr);
-}
-
+// ── HELPERS ─────────────────────────────────────────────────────────────
 function fmtR(val) {
   if (!val && val !== 0) return 'R$ —';
   return 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
-function fmtDate(dateStr) {
-  const [y,m,d] = dateStr.split('-');
+function fmtDate(s) {
+  if (!s) return '';
+  const [y,m,d] = s.split('-');
   return `${d}/${m}/${y}`;
 }
-function today() {
-  return new Date().toISOString().slice(0,10);
-}
-function emptyState(msg) {
-  return `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">${msg}</div></div>`;
-}
+function today() { return new Date().toISOString().slice(0,10); }
 function toast(msg, type='success') {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.className = 'toast ' + type + ' show';
-  setTimeout(()=>{ el.className = 'toast'; }, 2500);
+  setTimeout(() => el.className = 'toast', 2500);
 }
 
-// ══════════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════════
+// ── INIT ───────────────────────────────────────────────────────────────
 load();
 document.getElementById('nf-data').value = today();
 document.getElementById('fat-data').value = today();
 document.getElementById('emp-data').value = today();
 document.getElementById('est-mes').value = new Date().getMonth() + 1;
+document.getElementById('desp-data').value = today();
+document.getElementById('est-ano').value = new Date().getFullYear();
 
-// Apply loaded config to selects
-const lojaSelect = document.getElementById('emp-loja');
-if (state.config.lojaB) { lojaSelect.options[0].text = state.config.lojaB; lojaSelect.options[0].value = state.config.lojaB; }
-if (state.config.lojaC) { lojaSelect.options[1].text = state.config.lojaC; lojaSelect.options[1].value = state.config.lojaC; }
-
-renderDashboard();
-renderNotasHistory();
-
-// Sincroniza automaticamente ao abrir se tiver URL configurada
-if (state.config.scriptUrl) {
-  setTimeout(() => sincronizarPlanilha(), 1500);
+// Load script URL from localStorage if available
+const savedConfig = localStorage.getItem('cmv_state');
+if (savedConfig) {
+  try {
+    const old = JSON.parse(savedConfig);
+    if (old.config && old.config.scriptUrl) state.config.scriptUrl = old.config.scriptUrl;
+  } catch(e) {}
 }
 </script>
 </body>
