@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -325,6 +326,50 @@
   <button class="btn btn-primary" onclick="salvarDesperdicio()">Salvar Desperdício</button>
 </div>
 
+<!-- ═══ CONFIGURAÇÃO ═══ -->
+<div class="page" id="page-cfg">
+  <div class="form-card">
+    <div class="form-title">⚙️ Configurações</div>
+    <div class="field">
+      <label>URL do Google Apps Script</label>
+      <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/...">
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6">
+        Cole aqui a URL gerada ao publicar o Apps Script no Google Sheets.<br>
+        <strong style="color:var(--green-dark)">Apps Script → Implantar → Gerenciar implantações → copiar URL</strong>
+      </p>
+    </div>
+    <div class="field">
+      <label>Nome da Loja B</label>
+      <input type="text" id="cfg-loja-b" placeholder="Loja B">
+    </div>
+    <div class="field">
+      <label>Nome da Loja C</label>
+      <input type="text" id="cfg-loja-c" placeholder="Loja C">
+    </div>
+  </div>
+  <button class="btn btn-primary" onclick="salvarConfig()">Salvar Configurações</button>
+
+  <div class="form-card" style="margin-top:8px">
+    <div class="form-title">🔐 GCOM</div>
+    <div class="field">
+      <label>Empresa</label>
+      <input type="text" id="cfg-gcom-empresa" placeholder="Ex: spoleto">
+    </div>
+    <div class="field">
+      <label>Usuário</label>
+      <input type="text" id="cfg-gcom-user" placeholder="usuario@loja" autocomplete="username">
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" id="cfg-gcom-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6">
+      Credenciais salvas apenas neste dispositivo, nunca enviadas para servidores externos.
+    </p>
+  </div>
+  <button class="btn btn-secondary" onclick="salvarConfig()">Salvar GCOM</button>
+</div>
+
 <!-- MODAL ITEM NF -->
 <div class="modal-overlay" id="modal-item">
   <div class="modal">
@@ -418,6 +463,7 @@
   <button class="bnav-btn" onclick="navTo('emp',this)"><span class="icon">🔄</span>Empr.</button>
   <button class="bnav-btn" onclick="navTo('desp',this)"><span class="icon">🗑️</span>Desp.</button>
   <button class="bnav-btn" onclick="navTo('hist',this)"><span class="icon">📜</span>Histórico</button>
+  <button class="bnav-btn" onclick="navTo('cfg',this)"><span class="icon">⚙️</span>Config</button>
 </div>
 
 <script>
@@ -442,6 +488,7 @@ function navTo(page, btn) {
   document.getElementById('page-' + page).classList.add('active');
   btn.classList.add('active');
   if (page === 'hist') renderHist();
+  if (page === 'cfg') loadConfig();
 }
 
 // ── MODAL ──────────────────────────────────────────────────────────────
@@ -849,11 +896,52 @@ function toast(msg, type='success') {
 
 // ── INIT ───────────────────────────────────────────────────────────────
 load();
+
+function salvarConfig() {
+  state.config.scriptUrl = document.getElementById('cfg-script-url').value.trim();
+  state.config.lojaB = document.getElementById('cfg-loja-b').value.trim() || 'Loja B';
+  state.config.lojaC = document.getElementById('cfg-loja-c').value.trim() || 'Loja C';
+  state.config.gcomEmpresa = document.getElementById('cfg-gcom-empresa').value.trim();
+  state.config.gcomUser = document.getElementById('cfg-gcom-user').value.trim();
+  state.config.gcomPass = document.getElementById('cfg-gcom-pass').value;
+  // Update loja dropdowns
+  const lojaSelect = document.getElementById('emp-loja');
+  lojaSelect.options[0].text = state.config.lojaB;
+  lojaSelect.options[0].value = state.config.lojaB;
+  lojaSelect.options[1].text = state.config.lojaC;
+  lojaSelect.options[1].value = state.config.lojaC;
+  save();
+  toast('Configurações salvas! ✓', 'success');
+}
+
+function loadConfig() {
+  const c = state.config;
+  document.getElementById('cfg-script-url').value = c.scriptUrl || '';
+  document.getElementById('cfg-loja-b').value = c.lojaB || 'Loja B';
+  document.getElementById('cfg-loja-c').value = c.lojaC || 'Loja C';
+  document.getElementById('cfg-gcom-empresa').value = c.gcomEmpresa || '';
+  document.getElementById('cfg-gcom-user').value = c.gcomUser || '';
+  document.getElementById('cfg-gcom-pass').value = c.gcomPass || '';
+  // Update loja dropdowns
+  if (c.lojaB) {
+    const lojaSelect = document.getElementById('emp-loja');
+    lojaSelect.options[0].text = c.lojaB;
+    lojaSelect.options[0].value = c.lojaB;
+  }
+  if (c.lojaC) {
+    const lojaSelect = document.getElementById('emp-loja');
+    lojaSelect.options[1].text = c.lojaC;
+    lojaSelect.options[1].value = c.lojaC;
+  }
+}
 document.getElementById('nf-data').value = today();
 document.getElementById('fat-data').value = today();
 document.getElementById('emp-data').value = today();
 document.getElementById('est-mes').value = new Date().getMonth() + 1;
 document.getElementById('desp-data').value = today();
+
+// Load saved config
+loadConfig();
 document.getElementById('est-ano').value = new Date().getFullYear();
 
 // Load script URL from localStorage if available
