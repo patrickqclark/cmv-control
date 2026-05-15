@@ -328,8 +328,38 @@
 
 <!-- ═══ CONFIGURAÇÃO ═══ -->
 <div class="page" id="page-cfg">
+
+  <!-- AVISO DE MÊS NOVO -->
+  <div id="aviso-mes" style="display:none;background:#1b4332;border-radius:12px;padding:16px;margin-bottom:16px;border-left:4px solid var(--gold)">
+    <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:6px">
+      📅 Novo mês detectado!
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:12px">
+      O app ainda está conectado à planilha do mês anterior.<br>
+      Lembre de criar a planilha do novo mês e atualizar a URL abaixo!
+    </div>
+    <button onclick="dispensarAviso()" style="background:var(--gold);color:#000;border:none;border-radius:8px;padding:8px 16px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer">
+      Já atualizei ✓
+    </button>
+  </div>
+
   <div class="form-card">
     <div class="form-title">⚙️ Configurações</div>
+    <div class="field">
+      <label>Mês atual da planilha</label>
+      <select id="cfg-mes">
+        <option value="1">Janeiro</option><option value="2">Fevereiro</option>
+        <option value="3">Março</option><option value="4">Abril</option>
+        <option value="5">Maio</option><option value="6">Junho</option>
+        <option value="7">Julho</option><option value="8">Agosto</option>
+        <option value="9">Setembro</option><option value="10">Outubro</option>
+        <option value="11">Novembro</option><option value="12">Dezembro</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Ano</label>
+      <input type="number" id="cfg-ano" value="2026">
+    </div>
     <div class="field">
       <label>URL do Google Apps Script</label>
       <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/...">
@@ -469,7 +499,7 @@
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────
 let state = {
-  config: { scriptUrl: '' },
+  config: { scriptUrl: '', lojaB: 'Loja B', lojaC: 'Loja C', gcomEmpresa: '', gcomUser: '', gcomPass: '', mes: new Date().getMonth()+1, ano: new Date().getFullYear(), avisoMesDispensado: 0 },
   notas: [],
   faturamentos: [],
   estoques: [],
@@ -899,11 +929,15 @@ load();
 
 function salvarConfig() {
   state.config.scriptUrl = document.getElementById('cfg-script-url').value.trim();
+  state.config.mes = parseInt(document.getElementById('cfg-mes').value);
+  state.config.ano = parseInt(document.getElementById('cfg-ano').value);
   state.config.lojaB = document.getElementById('cfg-loja-b').value.trim() || 'Loja B';
   state.config.lojaC = document.getElementById('cfg-loja-c').value.trim() || 'Loja C';
   state.config.gcomEmpresa = document.getElementById('cfg-gcom-empresa').value.trim();
   state.config.gcomUser = document.getElementById('cfg-gcom-user').value.trim();
   state.config.gcomPass = document.getElementById('cfg-gcom-pass').value;
+  // Quando salva config, considera que o aviso foi dispensado para o mês configurado
+  state.config.avisoMesDispensado = state.config.mes + (state.config.ano * 100);
   // Update loja dropdowns
   const lojaSelect = document.getElementById('emp-loja');
   lojaSelect.options[0].text = state.config.lojaB;
@@ -912,28 +946,49 @@ function salvarConfig() {
   lojaSelect.options[1].value = state.config.lojaC;
   save();
   toast('Configurações salvas! ✓', 'success');
+  document.getElementById('aviso-mes').style.display = 'none';
 }
 
 function loadConfig() {
   const c = state.config;
   document.getElementById('cfg-script-url').value = c.scriptUrl || '';
+  document.getElementById('cfg-mes').value = c.mes || new Date().getMonth()+1;
+  document.getElementById('cfg-ano').value = c.ano || new Date().getFullYear();
   document.getElementById('cfg-loja-b').value = c.lojaB || 'Loja B';
   document.getElementById('cfg-loja-c').value = c.lojaC || 'Loja C';
   document.getElementById('cfg-gcom-empresa').value = c.gcomEmpresa || '';
   document.getElementById('cfg-gcom-user').value = c.gcomUser || '';
   document.getElementById('cfg-gcom-pass').value = c.gcomPass || '';
-  // Update loja dropdowns
   if (c.lojaB) {
     const lojaSelect = document.getElementById('emp-loja');
-    lojaSelect.options[0].text = c.lojaB;
-    lojaSelect.options[0].value = c.lojaB;
+    lojaSelect.options[0].text = c.lojaB; lojaSelect.options[0].value = c.lojaB;
+    lojaSelect.options[1].text = c.lojaC || 'Loja C'; lojaSelect.options[1].value = c.lojaC || 'Loja C';
   }
-  if (c.lojaC) {
-    const lojaSelect = document.getElementById('emp-loja');
-    lojaSelect.options[1].text = c.lojaC;
-    lojaSelect.options[1].value = c.lojaC;
-  }
+  verificarMes();
 }
+
+function verificarMes() {
+  const agora = new Date();
+  const mesAtual = agora.getMonth() + 1;
+  const anoAtual = agora.getFullYear();
+  const mesPlanilha = state.config.mes || mesAtual;
+  const anoPlanilha = state.config.ano || anoAtual;
+  const avisoDispensado = state.config.avisoMesDispensado || 0;
+  const chaveAtual = mesAtual + (anoAtual * 100);
+  const messDiferente = (mesAtual !== mesPlanilha || anoAtual !== anoPlanilha);
+  const naoDispensado = avisoDispensado !== chaveAtual;
+  document.getElementById('aviso-mes').style.display =
+    (messDiferente && naoDispensado && state.config.scriptUrl) ? 'block' : 'none';
+}
+
+function dispensarAviso() {
+  const agora = new Date();
+  state.config.avisoMesDispensado = (agora.getMonth()+1) + (agora.getFullYear() * 100);
+  save();
+  document.getElementById('aviso-mes').style.display = 'none';
+  toast('Ok! Atualize a URL quando criar a nova planilha 😊', 'success');
+}
+
 document.getElementById('nf-data').value = today();
 document.getElementById('fat-data').value = today();
 document.getElementById('emp-data').value = today();
@@ -942,6 +997,8 @@ document.getElementById('desp-data').value = today();
 
 // Load saved config
 loadConfig();
+// Check month on startup too
+verificarMes();
 document.getElementById('est-ano').value = new Date().getFullYear();
 
 // Load script URL from localStorage if available
